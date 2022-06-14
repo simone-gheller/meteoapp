@@ -1,0 +1,518 @@
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+h1{
+    margin-bottom: 40px;
+    margin-top: 20px;
+    font-size: 4em;
+    color: #fff;
+}
+
+h2{
+    margin-bottom: 45px;
+    margin-top: -5px;
+    font-size: 1.5em;
+    color: black
+}
+
+.search
+{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    border-radius: 60px;
+    transition: 0.5s;
+    box-shadow: 0 0 0 5px #5709d6;
+    overflow: hidden;
+    margin-bottom: 20px;
+
+}
+
+.search.active
+{
+    width: 500px;
+}
+
+.search .icon
+{
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    top: 0;
+    left: 0;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.search .icon::before
+{
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border: 3px solid #5709d6;
+    border-radius: 50%;
+    transform: translate(-4px, -4px);
+}
+
+.search .icon::after
+{
+    content: '';
+    width: 3px;
+    height: 12px;
+    background: #5709d6;
+    transform: translate(6px, 6px) rotate(315deg);
+}
+
+.search .input
+{
+    position: relative;
+    width: 300px;
+    height: 60px;
+    left: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search .input input
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 10px 0;
+}
+
+body
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #5709d6;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.c {
+    fill: rebeccapurple;
+    transition: 1s;
+    fill-opacity: 0.65;
+    stroke: #000000;
+    stroke-width: 0.4px;
+    transform: scale(0.7);
+}
+
+
+.d:hover {
+    fill-opacity: 1 !important;
+}
+
+.map-container{
+    position: relative;
+    overflow: hidden;
+    width: 430px;
+}
+
+.weekList
+{
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    transform: scale(0.7);
+    gap: 10px;
+}
+
+.dayOfWeek
+{
+    display: block;
+    position: relative;
+    text-align: center;
+    font-family: 'Helvetica', sans-serif;
+    cursor: pointer;
+	width: 100px;
+	height: 110px;
+	margin: 20px 0px;
+    background: #fff;
+    transition: 200ms;
+    opacity: 80%;
+}
+
+.dayOfWeek *{
+    pointer-events: none;
+}
+
+.dayOfWeek .binds {
+	position: absolute;
+	height: 15px;
+	width: 62px;
+    background: transparent;
+	border: 2px solid #999;
+	border-width: 0 5px;
+	top: -6px;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.dayOfWeek .day {
+	background: #555;
+	display: block;
+	padding: 6px 0;
+	color: #fff;
+	font-size: 15px;
+	font-weight: bold;
+	border-bottom: 2px solid #333;
+}
+
+.dayOfWeek .number {
+	display: block;
+	margin: 0;
+    padding: 0;
+	font-size: 48px;
+	box-shadow: 0 0 3px #ccc;
+    color: #000000;
+	position: relative;
+}
+
+.dayOfWeek:hover
+{
+
+    z-index: 1; 
+    opacity: 100%;
+}
+
+.dayOfWeek.dayOfWeek.selected
+{
+    transform: scale(1.3);
+    z-index: 1; 
+    opacity: 100%;
+}
+
+.forecast_card{
+  
+    background-color: #6F13E0;
+    border-radius: 15px;
+    color:#fff;
+}
+
+.city_forecast {
+    margin: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.city_forecast p {
+    display: flex;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+
+
+.card_table td{
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.visual_city_forecast{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 50px;
+}
+
+.visual_city_forecast img{
+    margin: 3px 10px;
+}
+
+.visual_city_forecast p{
+    display: flex;
+    flex-direction: row;
+    font-size: 3em;
+    font-weight: normal;
+}
+
+
+.visual{
+    width: 120px;
+}
+
+.card_caption{
+    margin: 5px;
+}
+
+h3{
+    font-size: 2em;
+}
+
+hr {
+    border: 0;
+	border-top: 2px solid white;
+    width: 90%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.temperatures{
+    width: 80%;
+    margin-top: 10px;
+}
+
+table{
+    width: 100%;
+    table-layout: auto;
+}
+
+table td:nth-child(2) { text-align: end; }
+
+
+.share-btn-container {
+    margin-top: 20px;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    padding:0px 15px;
+    border-radius: 5px;
+    gap: 10px;
+}
+
+.share-btn-container a i {
+font-size: 32px;
+}
+
+.share-btn-container a {
+margin: 12px 0;
+transition: 200ms;
+}
+
+.share-btn-container a:hover {
+transform: scale(1.3);
+}
+
+.share-btn-container .fa-facebook {
+color: #3b5998;
+}
+
+.share-btn-container .fa-twitter {
+color: #1da1f2;
+}
+
+.share-btn-container .fa-telegram {
+color: #0077b5;
+}
+
+.share-btn-container .fa-instagram {
+color: #bd081c;
+}
+
+.share-btn-container .fa-whatsapp {
+color: #25d366;
+}
+
+footer{
+    margin-top: 160px;
+    background-color: #230357;
+    width: 100%;
+   
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+.copyright p, .copyright a, .aboutus p{
+    color: rgb(129, 129, 129);
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+.copyright{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 30px;
+}
+
+
+.us{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 150px;
+    margin: 40px;
+    margin-bottom: 60px;
+}
+
+.links a, .aboutus a, .links p, .aboutus h5{
+    color: #fff;
+    font-weight: 400;
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+.aboutus{
+    flex-basis: 33%;
+}
+
+a{
+    text-decoration: none;
+}
+
+.logo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.c {
+    fill: rebeccapurple;
+    transition: 1s;
+    fill-opacity: 0.65;
+    stroke: #000000;
+    stroke-width: 0.4px;
+    transform: scale(0.7);
+}
+
+#svg {
+    transition: all ease-in-out .4s;
+}
+
+.c-zoom{
+    transform: scale(2);
+    transition: all ease-in-out .4s;
+}
+
+.d:hover {
+    fill-opacity: 1 !important;
+}
+
+.map-container{
+    position: relative;
+    overflow: hidden;
+    width: 430px;
+}
+
+.icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+}
+
+.icon-big {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    pointer-events: none;
+}
+
+.sunny{
+    background-image: url('weather-icons/png/wsymbol_0001_sunny.png');
+    background-size: contain;
+}
+
+.sunny_intervals{
+    background-image: url('weather-icons/png/wsymbol_0002_sunny_intervals.png');
+    background-size: contain;
+}
+
+.cloudy{
+    background-image: url('weather-icons/png/wsymbol_0004_black_low_cloud.png');
+    background-size: contain;
+}
+
+.rainy{
+    background-image: url('weather-icons/png/wsymbol_0018_cloudy_with_heavy_rain.png');
+    background-size: contain;
+}
+
+.storm{
+    background-image: url('weather-icons/png/wsymbol_0024_thunderstorms.png');
+    background-size: contain;
+}
+
+.snowy{
+    background-image: url('weather-icons/png/wsymbol_0020_cloudy_with_heavy_snow.png');
+    background-size: contain;
+}
+
+#level2 > div{
+    /* transform: scale(0); */
+    transition: 0s;
+}
+
+
+@keyframes append-animate {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+
+/* animate new box */
+.new-box {
+    transform: scale(0);
+	animation: append-animate 0.5s ease-in 0s forwards !important;
+    animation-delay: 0.4s !important;
+}
+
+
+
+.show{
+    transform: scale(1) !important;
+    transition: 1s !important;
+    transition-delay: 0.4s !important;
+
+}
+
+#level1 > div{
+    transform: scale(1);
+    transition: 0s;
+    transition-delay: 0.4s;
+}
+
+.hide{
+    transform: scale(0) !important;
+    transition: 0s !important;
+}
+
+#level1{
+    background-color: #000000;
+}
