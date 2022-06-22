@@ -1,0 +1,119 @@
+/* 
+.c {
+    fill: rebeccapurple;
+    transition: 1s;
+    fill-opacity: 0.65;
+    stroke: #000000;
+    stroke-width: 0.4px;
+    transform: scale(0.7);
+}
+
+
+.d:hover {
+    fill-opacity: 1 !important;
+}
+
+.map-container{
+    position: relative;
+    overflow: hidden;
+    width: 430px;
+}
+
+#svg {
+    transition: all ease-in-out .4s;
+} */
+
+.c-zoom{
+    transform: scale(2);
+    transition: all ease-in-out .4s;
+}
+
+/* .d:hover {
+    fill-opacity: 1 !important;
+}
+
+.icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+}
+
+.icon-big {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    pointer-events: none;
+} */
+
+/* .sunny{
+    background-image: url('weather-icons/png/wsymbol_0001_sunny.png');
+    background-size: contain;
+}
+
+.sunny_intervals{
+    background-image: url('weather-icons/png/wsymbol_0002_sunny_intervals.png');
+    background-size: contain;
+}
+
+.cloudy{
+    background-image: url('weather-icons/png/wsymbol_0004_black_low_cloud.png');
+    background-size: contain;
+}
+
+.rainy{
+    background-image: url('weather-icons/png/wsymbol_0018_cloudy_with_heavy_rain.png');
+    background-size: contain;
+}
+
+.storm{
+    background-image: url('weather-icons/png/wsymbol_0024_thunderstorms.png');
+    background-size: contain;
+}
+
+.snowy{
+    background-image: url('weather-icons/png/wsymbol_0020_cloudy_with_heavy_snow.png');
+    background-size: contain;
+}
+
+#level2 > div{
+    transition: 0s;
+} */
+
+
+@keyframes append-animate {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+
+/* animate new box */
+.new-box {
+    transform: scale(0);
+	animation: append-animate 0.5s ease-in 0s forwards !important;
+    animation-delay: 0.4s !important;
+}
+
+
+
+.show{
+    transform: scale(1) !important;
+    transition: 1s !important;
+    transition-delay: 0.4s !important;
+
+}
+/* 
+#level1 > div{
+    transform: scale(1);
+    transition: 0s;
+    transition-delay: 0.4s;
+} */
+
+.hide{
+    transform: scale(0) !important;
+    transition: 0s !important;
+}
