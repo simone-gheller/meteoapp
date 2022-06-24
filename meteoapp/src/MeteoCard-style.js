@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const ForecastCard = styled.div`
-background-color: #6F13E0;
-border-radius: 15px;
-color:#fff;
+    background-color: #6F13E0;
+    border-radius: 15px;
+    color:#fff;
+    min-width: 440px;
 `
 
 export const CityForecastCard = styled.div`

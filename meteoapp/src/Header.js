@@ -1,5 +1,5 @@
 import { Title, Search, Icon, Searchinputs, SearchIcon, Dataresult, Dataitem} from './Header-style'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import comuni from './comuni-lightweight.json'
 
 
@@ -8,12 +8,30 @@ function Header({setForecast, location, setLocation}) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [submit, setSubmit] = useState(false)
+  const [hideSuggs, setHidesuggs] = useState(false)
+
+  const divref = useRef(null)
+
+  useEffect(() => {
+
+    function handleClickOutside(event) {
+      if (divref.current && !divref.current.contains(event.target)) {
+        setHidesuggs(true)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [divref]);
 
   useEffect(()=>{
     if(query!=''){
       const first5 = [];
       comuni.find(i => ((i.n.toLowerCase().startsWith(query.toLowerCase()) && first5.push(i), first5.length >= 5)));
       setResults(first5)
+      setHidesuggs(false)
     }
   },[query])
 
@@ -65,7 +83,7 @@ function Header({setForecast, location, setLocation}) {
   return (
     <>
       <Title>Che tempo fa</Title>
-      <Search>
+      <Search ref={divref}>
         <Searchinputs>
           <input
             type="text"
@@ -75,11 +93,14 @@ function Header({setForecast, location, setLocation}) {
             onKeyDown={onSubmit}
           />
         </Searchinputs>
-        {query.length != 0 && (
-          <Dataresult height={30*results.length}>
+        {query.length != 0 && !hideSuggs && (
+          <Dataresult  height={30*results.length}>
             {results.map((value, key) => {
               return (
-                <Dataitem key={key}>
+                <Dataitem key={key} onClick={()=>{
+                  setQuery(value.n);
+                  setSubmit(true)
+                }}>
                   {value.n}
                 </Dataitem>
               );

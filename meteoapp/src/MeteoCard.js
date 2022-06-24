@@ -19,6 +19,15 @@ dayjs.updateLocale('it', {
 })
 dayjs.locale('it')
 
+const catchphrases = {
+    "sunny": "Esci all'aria aperta e goditi il sole 😎",
+    "sunny_intervals": "Hei, ma dov'è finito il sole? 🤔",
+    "cloudy": "Probabile rovesci. Potrebbe piovere!",
+    "rainy": "Piove, non dimenticarti l'ombrello! 🌂",
+    "stormy": "Temporali in vista, è meglio rimane a casa per oggi! 💒",
+    "snowy": "Nevica! Che belli i pupazzi di neve... ❄️",
+}
+
 const map = {
     "sunny": sunny,
     "sunny_intervals": sunny_intervals,
@@ -41,9 +50,9 @@ function MeteoCard({ selDay, location, forecast }) {
             <VisualCityForecastCard>
                 {forecast != null &&
                     <VisualIcon src={map[weather_decode(forecast.daily[0].weather[0].id)]} />}
-                <p>{forecast != null && forecast.daily[0].temp.day + '°'}</p>
+                <p>{forecast != null && (Math.round((forecast.daily[0].temp.day + Number.EPSILON)*100)/100).toFixed(1) + '°'}</p>
             </VisualCityForecastCard>
-            <CardCaption>Esci all'aria aperta e goditi il sole &#128526;</CardCaption>
+            <CardCaption>{forecast != null && catchphrases[weather_decode(forecast.daily[0].weather[0].id)]}</CardCaption>
             <Divisor />
             <Temperatures>
                 <CardTable>

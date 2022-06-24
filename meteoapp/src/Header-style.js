@@ -71,4 +71,10 @@ export const Dataitem = styled.div`
   align-items: center;
   padding-left: 20px;
   color: black;
+  background-color: white;
+
+  &:hover{
+    background-color: #CCCCCC;
+    cursor: pointer;
+  }
 `;
