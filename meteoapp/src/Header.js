@@ -38,7 +38,7 @@ function Header({setForecast, location, setLocation}) {
   useEffect(()=>{
     async function handleItalyRequest(){
       try {
-          let response = await fetch(`http://127.0.0.1:3001/?location=${location.city}`);
+          let response = await fetch(`http://127.0.0.1:3001/api/city/?location=${location.city}`);
           if(!response.ok)
               throw Error(response.statusText)
           let data = await response.json();
@@ -54,7 +54,7 @@ function Header({setForecast, location, setLocation}) {
     async function handleItalyRequest(){
       if(submit){
         try {
-          let response = await fetch(`http://127.0.0.1:3001/?location=${query}`);
+          let response = await fetch(`http://127.0.0.1:3001/api/city/?location=${query}`);
           if(!response.ok)
               throw Error(response.statusText)
           let data = await response.json();

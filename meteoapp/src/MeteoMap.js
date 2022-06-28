@@ -15,7 +15,7 @@ function MeteoMap() {
 
         async function handleItalyRequest(){
             try {
-                let response = await fetch('http://127.0.0.1:3001/italy');
+                let response = await fetch('http://127.0.0.1:3001/api/italy');
                 if(!response.ok)
                     throw Error(response.statusText)
                 let data = await response.json();
@@ -33,7 +33,7 @@ function MeteoMap() {
             if(zoom){
                 try {
                     console.log(zoom)
-                    let response = await fetch(`http://127.0.0.1:3001/regions?id=${zoom}`);
+                    let response = await fetch(`http://127.0.0.1:3001/api/regions?id=${zoom}`);
                     if(!response.ok)
                         throw Error(response.statusText)
                     let data = await response.json();

@@ -1,3 +1,6 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /privacy.html
+Disallow: /terms.html
+
+Sitemap: https://meteosg.it/sitemap.xml
