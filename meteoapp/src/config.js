@@ -8,9 +8,9 @@ const dev = {
   
 const prod = {
     urls: {
-        CITY: "http://127.0.0.1/api/city/",
-        REGION: "http://127.0.0.1/api/regions/",
-        ITALY: "http://127.0.0.1/api/italy/"
+        CITY: "/api/city/",
+        REGION: "/api/regions/",
+        ITALY: "/api/italy/"
     }
 };
   
