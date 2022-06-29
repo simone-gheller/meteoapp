@@ -1,4 +1,3 @@
-import './content.css';
 import MeteoMap from './MeteoMap'
 import MeteoCard from './MeteoCard'
 import DateSelection from './DateSelection'
