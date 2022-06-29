@@ -1,6 +1,7 @@
 import {PathD, Level1, Level2, MapContainer, Svg, G, Icon, IconBig } from './MeteoMap-style.js'
 import React, { useState, useEffect} from 'react'
 import {weather_decode, coords, level1_icons, level2_icons} from './MeteoMap-utils.js'
+import config from './config.js'
 
 function MeteoMap() {
     const [visible, setVisible] = useState(false)
@@ -15,7 +16,7 @@ function MeteoMap() {
 
         async function handleItalyRequest(){
             try {
-                let response = await fetch('http://127.0.0.1:3001/api/italy');
+                let response = await fetch(config.urls.ITALY);
                 if(!response.ok)
                     throw Error(response.statusText)
                 let data = await response.json();
@@ -33,7 +34,7 @@ function MeteoMap() {
             if(zoom){
                 try {
                     console.log(zoom)
-                    let response = await fetch(`http://127.0.0.1:3001/api/regions?id=${zoom}`);
+                    let response = await fetch(`${config.urls.REGION}?id=${zoom}`);
                     if(!response.ok)
                         throw Error(response.statusText)
                     let data = await response.json();

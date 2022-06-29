@@ -1,6 +1,7 @@
 import { Title, Search, Icon, Searchinputs, SearchIcon, Dataresult, Dataitem} from './Header-style'
 import React, { useState, useEffect, useRef } from 'react';
-import comuni from './comuni-lightweight.json'
+import comuni from './comuni-lightweight.json';
+import config from './config';
 
 
 function Header({setForecast, location, setLocation}) {
@@ -38,7 +39,7 @@ function Header({setForecast, location, setLocation}) {
   useEffect(()=>{
     async function handleItalyRequest(){
       try {
-          let response = await fetch(`http://127.0.0.1:3001/api/city/?location=${location.city}`);
+          let response = await fetch(`${config.urls.CITY}?location=${location.city}`);
           if(!response.ok)
               throw Error(response.statusText)
           let data = await response.json();
@@ -47,14 +48,17 @@ function Header({setForecast, location, setLocation}) {
           alert(error)
       }
     }
+    console.log(process.env.REACT_APP_STAGE)
+    console.log(config)
     handleItalyRequest();
+
   },[])
 
   useEffect(()=>{
     async function handleItalyRequest(){
       if(submit){
         try {
-          let response = await fetch(`http://127.0.0.1:3001/api/city/?location=${query}`);
+          let response = await fetch(`${config.urls.CITY}?location=${query}`);
           if(!response.ok)
               throw Error(response.statusText)
           let data = await response.json();
