@@ -11,20 +11,21 @@ function Footer() {
                 <img src={sunny} />
             </Logo>
             <Links>
-                <a href="#">Termini d'uso</a><br />
-                <a href="#">Contattaci</a><br />
-                <a href="#">Condividi sui social</a><br />
-                <Socials />
+                <p>Recapiti:</p>
+                <p>via Cinque Martiri, 27</p>
+                <p>Como (CO) 21010</p><br/>
+                <p>info@meteoesse.it</p>
             </Links>
             <Aboutus>
-                <h5>About us</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est consectetur sint, iure adipisci harum earum rerum. Corporis fuga exercitationem in quisquam eveniet et beatae numquam hic. Voluptatem magni laborum ipsum?</p>
+                <h5>About</h5>
+                <p>Esse per Semplicità. Meteoesse è il portale meteo che offre previsioni greatuite per ogni località italiana, e lo fa nel modo più semplice, veloce e trasparente possibile. </p>
             </Aboutus>
         </Us>
-        <Copyright> 
-            <a href="#">Privacy Policy</a>
+        <Copyright>
+            <a href="/terms">Termini d'uso</a>
+            <a href="/privacy">Privacy Policy</a>
             <a href="/sitemap">Sitemap</a>
-            <p>&copy; 2022 Meteosg spa</p>
+            <p>&copy; 2022 Meteoesse spa</p>
         </Copyright>
     </FooterDiv>
   );
