@@ -3,7 +3,7 @@ import React, { useState, useEffect} from 'react'
 import {weather_decode, coords, level1_icons, level2_icons} from './MeteoMap-utils.js'
 import config from './config.js'
 
-function MeteoMap() {
+function MeteoMap({ selDay }) {
     const [visible, setVisible] = useState(false)
     const [weather, setWeather] = useState(null)
     const [zoom, setZoom] = useState(null)
@@ -175,7 +175,7 @@ function MeteoMap() {
                 Object.entries(level1_icons).map((entry,index)=>{
                     let code = null
                     if(weather != null){
-                        code = weather_decode(weather[entry[0]]['daily'][0]['weather'][0]['id']);
+                        code = weather_decode(weather[entry[0]]['daily'][selDay]['weather'][0]['id']);
                     }
                     return <Icon title={entry[0]} key={index} top={entry[1][0]} left={entry[1][1]} weather={code} visible={visible}/>
                 })
@@ -187,7 +187,7 @@ function MeteoMap() {
                     let code = null
                     if(regweather != null){
                         console.log(regweather + zoom + wait)
-                        code = weather_decode(regweather[entry[0]]['daily'][0]['weather'][0]['id']);
+                        code = weather_decode(regweather[entry[0]]['daily'][selDay]['weather'][0]['id']);
                     }
                     return <IconBig title={entry[0]} key={index} top={entry[1][0]} left={entry[1][1]} weather={code} visible={regvisible}/>
                 })

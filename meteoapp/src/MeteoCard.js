@@ -49,10 +49,10 @@ function MeteoCard({ selDay, location, forecast }) {
             }</p>
             <VisualCityForecastCard>
                 {forecast != null &&
-                    <VisualIcon src={map[weather_decode(forecast.daily[0].weather[0].id)]} />}
-                <p>{forecast != null && (Math.round((forecast.daily[0].temp.day + Number.EPSILON)*100)/100).toFixed(1) + '°'}</p>
+                    <VisualIcon src={map[weather_decode(forecast.daily[selDay].weather[0].id)]} />}
+                <p>{forecast != null && (Math.round((forecast.daily[selDay].temp.day + Number.EPSILON)*100)/100).toFixed(1) + '°'}</p>
             </VisualCityForecastCard>
-            <CardCaption>{forecast != null && catchphrases[weather_decode(forecast.daily[0].weather[0].id)]}</CardCaption>
+            <CardCaption>{forecast != null && catchphrases[weather_decode(forecast.daily[selDay].weather[0].id)]}</CardCaption>
             <Divisor />
             <Temperatures>
                 <CardTable>
@@ -60,11 +60,11 @@ function MeteoCard({ selDay, location, forecast }) {
                     <tbody>
                         <tr>
                             <td>Umidità:</td>
-                            <td>{forecast != null && forecast.daily[0].humidity + '%'}</td>
+                            <td>{forecast != null && forecast.daily[selDay].humidity + '%'}</td>
                         </tr>
                         <tr>
                             <td>Vento:</td>
-                            <td>{forecast != null && forecast.daily[0].wind_speed + ' km/h'}</td>
+                            <td>{forecast != null && forecast.daily[selDay].wind_speed + ' km/h'}</td>
                         </tr>
                     </tbody>
 

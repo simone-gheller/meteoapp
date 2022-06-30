@@ -23,7 +23,7 @@ function Footer() {
         </Us>
         <Copyright> 
             <a href="#">Privacy Policy</a>
-            <a href="#">Sitemap</a>
+            <a href="/sitemap">Sitemap</a>
             <p>&copy; 2022 Meteosg spa</p>
         </Copyright>
     </FooterDiv>
