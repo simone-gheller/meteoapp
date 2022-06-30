@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://www.meteoesse.it/</loc>
     <lastmod>2022-06-30</lastmod>
-    <image:image>
-        <image:loc>http://example.com/sunny.jpg</image:loc>
-    </image:image>
-    <image:image>
-        <image:loc>http://example.com/rainy.jpg</image:loc>
-    </image:image>
-        <image:image>
-        <image:loc>http://example.com/rainy.jpg</image:loc>
-    </image:image>
-        <image:image>
-        <image:loc>http://example.com/snowy.jpg</image:loc>
-    </image:image>
-        <image:image>
-        <image:loc>http://example.com/stormy.jpg</image:loc>
-    </image:image>
   </url>
 </urlset>
