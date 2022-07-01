@@ -70,6 +70,7 @@ function Header({setForecast, location, setLocation}) {
       }
     }
     handleItalyRequest();
+    setHidesuggs(true)
     setSubmit(false)
   },[submit])
 
@@ -81,6 +82,7 @@ function Header({setForecast, location, setLocation}) {
     if (e.key === 'Enter') {
       console.log('enter');
       setSubmit(true)
+      setHidesuggs(true)
     }
   }
 
@@ -103,6 +105,7 @@ function Header({setForecast, location, setLocation}) {
               return (
                 <Dataitem key={key} onClick={()=>{
                   setQuery(value.n);
+                  setHidesuggs(true)
                   setSubmit(true)
                 }}>
                   {value.n}

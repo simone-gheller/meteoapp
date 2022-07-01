@@ -6,6 +6,17 @@ import rainy from './weather-icons/png/wsymbol_0018_cloudy_with_heavy_rain.png';
 import storm from './weather-icons/png/wsymbol_0024_thunderstorms.png';
 import snowy from './weather-icons/png/wsymbol_0020_cloudy_with_heavy_snow.png';
 
+export const Loading = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background: rgba(255, 255, 255, 0.8)
+        url("https://media.giphy.com/media/8agqybiK5LW8qrG3vJ/giphy.gif") center
+        no-repeat;
+    z-index: 10;
+`;
+
 export const MapContainer = styled.div`
     position: relative;
     overflow: hidden;
@@ -40,6 +51,11 @@ export const Level1 = styled.div`
     transition: 0s;
     transition-delay: 0.4s;
     overflow: visible;
+
+    & *{
+        transition-delay: 0.4s;
+        transform: scale(0);
+    }
 `;
 
 export const Level2 = styled.div`

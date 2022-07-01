@@ -1,4 +1,4 @@
-import {PathD, Level1, Level2, MapContainer, Svg, G, Icon, IconBig } from './MeteoMap-style.js'
+import {PathD, Level1, Level2, MapContainer, Svg, G, Icon, IconBig, Loading } from './MeteoMap-style.js'
 import React, { useState, useEffect} from 'react'
 import {weather_decode, coords, level1_icons, level2_icons} from './MeteoMap-utils.js'
 import config from './config.js'
@@ -16,12 +16,14 @@ function MeteoMap({ selDay }) {
 
         async function handleItalyRequest(){
             try {
+
                 let response = await fetch(config.urls.ITALY);
                 if(!response.ok)
                     throw Error(response.statusText)
                 let data = await response.json();
                 setWeather(data)
                 setVisible(true)
+
             } catch (error) {
                 alert(error)
             }
@@ -33,7 +35,7 @@ function MeteoMap({ selDay }) {
         async function handleRegRequest(){
             if(zoom){
                 try {
-                    console.log(zoom)
+
                     let response = await fetch(`${config.urls.REGION}?id=${zoom}`);
                     if(!response.ok)
                         throw Error(response.statusText)
@@ -42,6 +44,7 @@ function MeteoMap({ selDay }) {
                     setRegvisible(true)
                     console.log(data)
                     setWait(true)
+
                 } catch (error) {
                     alert(error)
                 }
@@ -66,6 +69,23 @@ function MeteoMap({ selDay }) {
             setRegvisible(false)
         }
     }
+
+    function Leve1Component(){
+
+        return(
+            <Level1>
+            {
+                Object.entries(level1_icons).map((entry,index)=>{
+                    let code = null
+                    if(weather != null){
+                        code = weather_decode(weather[entry[0]]['daily'][selDay]['weather'][0]['id']);
+                    }
+                    return <Icon title={entry[0]} key={index} top={entry[1][0]} left={entry[1][1]} weather={code} visible={visible}/>
+                })
+            }
+            </Level1>)
+    }
+
 
     return (
     <MapContainer>
@@ -170,17 +190,7 @@ function MeteoMap({ selDay }) {
                     id="IT-34" onClick={zooming}/>
             </G>
         </Svg>
-        <Level1>
-            {
-                Object.entries(level1_icons).map((entry,index)=>{
-                    let code = null
-                    if(weather != null){
-                        code = weather_decode(weather[entry[0]]['daily'][selDay]['weather'][0]['id']);
-                    }
-                    return <Icon title={entry[0]} key={index} top={entry[1][0]} left={entry[1][1]} weather={code} visible={visible}/>
-                })
-            }
-        </Level1>
+        <Leve1Component />
         <Level2>
             {
                 zoom && wait && Object.entries(level2_icons[zoom]).map((entry,index)=>{
