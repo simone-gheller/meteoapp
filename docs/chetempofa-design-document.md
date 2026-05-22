@@ -413,7 +413,7 @@ Fonti ufficiali verificate: Cloudflare Pages supporta siti statici senza framewo
 - Deploy dei file attuali: `index.html`, `css/`, `script.js`, `icons/`.
 - Nessun build command applicativo.
 - Cloudflare Pages: no framework, root come output finche `index.html` resta in root; build command vuoto o `exit 0` secondo setup.
-- Custom domain `chetempofa.it` dopo conferma.
+- Custom domain `chetempofa.com`, con eventuale `www` da redirigere al dominio nudo.
 - Preview deploy prima di produzione.
 
 ### Quando introdurre Worker/API proxy
@@ -429,7 +429,7 @@ Non per MVP. Valutarlo solo se:
 
 ### Decisioni raccomandate
 
-- Prima release: static MVP su Cloudflare Pages, canonical `https://chetempofa.it/`, senza route SEO, ads o GA4 reale.
+- Prima release: static MVP su Cloudflare Pages, canonical `https://chetempofa.com/`, senza route SEO, ads o GA4 reale.
 - Primo batch: solo UX visibile e accessibilita base.
 - SEO citta: fase successiva con static generation soft da 20-50 citta curate.
 - Ads: non predisporre placeholder visibili ora.
@@ -439,7 +439,7 @@ Non per MVP. Valutarlo solo se:
 
 - GA4 rimandato a una release successiva.
 - Hosting MVP: Cloudflare Pages.
-- Dominio canonical: `https://chetempofa.it/`, con `www` da redirigere al dominio nudo.
+- Dominio canonical: `https://chetempofa.com/`, con `www` da redirigere al dominio nudo.
 - Prima release: nessun ads.
 - SEO futura: static generation soft, non route client-side vendute come SEO.
 

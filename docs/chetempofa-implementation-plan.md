@@ -63,7 +63,7 @@ Modifiche da NON fare nel batch 1:
 
 - Prima release senza GA4.
 - Hosting: Cloudflare Pages.
-- Dominio canonical: `https://chetempofa.it/`, con `www` redirect.
+- Dominio canonical: `https://chetempofa.com/`, con `www` redirect.
 - Prima release senza ads.
 - SEO futura con static generation soft.
 
@@ -292,7 +292,7 @@ Per prima release: nessuna SEO citta. Pubblicare homepage/app con metadata, cano
 ### Decisioni chiuse e richieste
 
 - Chiuso: prima release homepage-only.
-- Chiuso: dominio canonical `https://chetempofa.it/`.
+- Chiuso: dominio canonical `https://chetempofa.com/`.
 - Chiuso: SEO futura via static generation soft.
 - Da decidere: catalogo iniziale di 20-50 citta.
 - Da decidere: momento in cui fare lo spike static generation.

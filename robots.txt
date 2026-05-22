@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chetempofa.it/sitemap.xml
+Sitemap: https://chetempofa.com/sitemap.xml

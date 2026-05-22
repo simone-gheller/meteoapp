@@ -14,7 +14,7 @@ Scope:
 
 - documentazione prodotto/implementazione;
 - metadata homepage;
-- canonical `https://chetempofa.it/`;
+- canonical `https://chetempofa.com/`;
 - `robots.txt`;
 - `sitemap.xml` homepage-only.
 
@@ -53,7 +53,7 @@ Acceptance:
 
 - `index.html` contiene title, meta description, canonical, Open Graph/Twitter base;
 - `robots.txt` punta alla sitemap;
-- `sitemap.xml` contiene solo `https://chetempofa.it/`;
+- `sitemap.xml` contiene solo `https://chetempofa.com/`;
 - `xmllint --noout sitemap.xml` passa.
 
 ### Phase 0.3 - Baseline check
@@ -174,12 +174,14 @@ Release gate:
 
 ## Release 2 - Static public deploy
 
+Stato: completata in `v2.0` per la parte repository. Il collegamento effettivo Cloudflare/DNS va completato o verificato in dashboard.
+
 Obiettivo: pubblicare la SPA statica su Cloudflare Pages con dominio canonical.
 
 Scope:
 
 - Cloudflare Pages no-framework;
-- dominio `chetempofa.it`;
+- dominio `chetempofa.com`;
 - redirect `www` verso dominio nudo;
 - smoke test produzione;
 - performance baseline.
@@ -192,6 +194,25 @@ Non-goals:
 - GA4;
 - ads;
 - city pages.
+
+### Phase 2.0 - Repository domain target
+
+File:
+
+- `index.html`
+- `robots.txt`
+- `sitemap.xml`
+- `docs/chetempofa-design-document.md`
+- `docs/chetempofa-implementation-plan.md`
+- `docs/chetempofa-release-plan.md`
+
+Acceptance:
+
+- canonical homepage punta a `https://chetempofa.com/`;
+- Open Graph URL punta a `https://chetempofa.com/`;
+- `robots.txt` punta alla sitemap `.com`;
+- `sitemap.xml` contiene solo `https://chetempofa.com/`;
+- i piani non citano piu il vecchio dominio come destinazione.
 
 ### Phase 2.1 - Cloudflare Pages setup
 
@@ -211,8 +232,8 @@ Acceptance:
 
 Acceptance:
 
-- `https://chetempofa.it/` serve l'app;
-- `www.chetempofa.it` redirige a `https://chetempofa.it/`;
+- `https://chetempofa.com/` serve l'app;
+- `www.chetempofa.com` redirige a `https://chetempofa.com/`;
 - canonical in HTML resta coerente;
 - sitemap usa dominio canonical.
 
@@ -445,14 +466,14 @@ Acceptance:
 
 ## Immediate next release
 
-La prossima release da implementare e Release 2.
+La prossima release da implementare e Release 3, dopo tua approvazione esplicita.
 
 Batch operativo:
 
-1. Configurare Cloudflare Pages no-framework.
-2. Collegare `chetempofa.it` come dominio canonical.
-3. Redirigere `www` verso il dominio nudo.
-4. Eseguire smoke test produzione.
-5. Annotare performance baseline.
+1. Keyboard navigation suggerimenti.
+2. ARIA combobox/listbox.
+3. Stati loading/error suggerimenti.
+4. Omonimie piu chiare.
+5. Recenti piu leggibili se necessario.
 
-Effort stimato: S/M, dipende dall'accesso a Cloudflare e DNS.
+Effort stimato: M.
