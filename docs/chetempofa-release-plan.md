@@ -6,7 +6,7 @@ Principio guida: pubblicare prima una SPA statica solida, poi aggiungere search 
 
 ## Release 0 - Foundation e SEO homepage minima
 
-Stato: in corso / quasi pronta.
+Stato: completata in `v0.1`.
 
 Obiettivo: preparare la base pubblicabile senza cambiare architettura.
 
@@ -69,6 +69,8 @@ Acceptance:
 - nessuna dipendenza nuova.
 
 ## Release 1 - Public MVP UX hardening
+
+Stato: completata in `v1.0`.
 
 Obiettivo: rendere l'app abbastanza solida da andare online come MVP pubblico.
 
@@ -443,14 +445,14 @@ Acceptance:
 
 ## Immediate next release
 
-La prossima release da implementare e Release 1.
+La prossima release da implementare e Release 2.
 
 Batch operativo:
 
-1. Hourly utile o empty state.
-2. Hero desktop compatta.
-3. Daily forecast leggibile e touch/focus polish.
-4. Loading/error migliori.
-5. Accessibilita base.
+1. Configurare Cloudflare Pages no-framework.
+2. Collegare `chetempofa.it` come dominio canonical.
+3. Redirigere `www` verso il dominio nudo.
+4. Eseguire smoke test produzione.
+5. Annotare performance baseline.
 
-Effort stimato: M, circa 1-2 giornate effettive con QA manuale.
+Effort stimato: S/M, dipende dall'accesso a Cloudflare e DNS.

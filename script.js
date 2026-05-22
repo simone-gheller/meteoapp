@@ -372,14 +372,10 @@ function renderHourly() {
   const timezone = state.weather.timezone || "auto";
   const date = daily.time[state.selectedDay];
   const currentTime = weatherDate(state.weather.current.time).getTime();
-  const selectedHours = hourly.time
-    .map((time, index) => ({ time, index }))
-    .filter((item) => item.time.startsWith(date))
-    .filter((item) => state.selectedDay !== 0 || weatherDate(item.time).getTime() >= currentTime)
-    .slice(0, 12);
+  const selectedHours = hourlyWindow(hourly, date, state.selectedDay, currentTime);
 
   const title = state.selectedDay === 0
-    ? "Oggi"
+    ? "Prossime ore"
     : formatDateTime(date, timezone, { weekday: "long", day: "numeric", month: "short" });
   const topRain = selectedHours.reduce((max, item) => {
     return Math.max(max, hourly.precipitation_probability[item.index] ?? 0);
@@ -387,23 +383,53 @@ function renderHourly() {
 
   els.timelineTitle.textContent = title;
   els.timelineSummary.textContent = selectedHours.length
-    ? `Ora per ora · picco pioggia ${Math.round(topRain)}%`
+    ? `${state.selectedDay === 0 ? "Da adesso" : "Dal mattino"} · picco pioggia ${Math.round(topRain)}%`
     : "Ore non disponibili";
+
+  if (!selectedHours.length) {
+    els.hourlyStrip.innerHTML = `
+      <div class="hourly-empty">
+        <strong>Ore non disponibili</strong>
+        <span>Per questo giorno Open-Meteo non ha restituito fasce orarie utili.</span>
+      </div>
+    `;
+    return;
+  }
 
   els.hourlyStrip.innerHTML = selectedHours
     .map((item) => {
       const isDay = isHourDay(item.time);
       const info = weatherInfo(hourly.weather_code[item.index], isDay);
+      const wind = Math.round(hourly.wind_speed_10m[item.index] ?? 0);
       return `
         <article class="hour-card">
           <span>${formatDateTime(item.time, timezone, { hour: "2-digit", minute: "2-digit" })}</span>
           <img src="${info.icon}" alt="${info.label}">
           <strong>${formatTemp(hourly.temperature_2m[item.index])}${tempUnitLabel()}</strong>
           <em>${Math.round(hourly.precipitation_probability[item.index] ?? 0)}% pioggia</em>
+          <small>${wind} km/h vento</small>
         </article>
       `;
     })
     .join("");
+}
+
+function hourlyWindow(hourly, date, selectedDay, currentTime) {
+  const entries = hourly.time.map((time, index) => ({ time, index }));
+
+  if (selectedDay === 0) {
+    return entries
+      .filter((item) => weatherDate(item.time).getTime() >= currentTime)
+      .slice(0, 12);
+  }
+
+  const dayEntries = entries.filter((item) => item.time.startsWith(date));
+  const daytimeEntries = dayEntries.filter((item) => {
+    const hour = weatherDate(item.time).getHours();
+    return hour >= 6 && hour <= 23;
+  });
+
+  return (daytimeEntries.length ? daytimeEntries : dayEntries).slice(0, 12);
 }
 
 function renderRecent() {
@@ -768,6 +794,7 @@ function setStatus(message, type = "info", options = {}) {
   clearTimeout(statusTimer);
   els.status.textContent = message;
   els.status.classList.toggle("error", type === "error");
+  els.status.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
   els.status.hidden = false;
 
   if (autoHide) {
@@ -784,6 +811,7 @@ function clearStatus() {
 
 function setLoading(isLoading) {
   els.body.classList.toggle("is-loading", isLoading);
+  els.body.setAttribute("aria-busy", String(isLoading));
   els.searchForm.querySelector("button").disabled = isLoading;
   els.locationButton.disabled = isLoading;
 }
