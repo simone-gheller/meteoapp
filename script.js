@@ -76,6 +76,12 @@ function wireEvents() {
 }
 
 async function boot() {
+  const staticPlace = readStaticPlace();
+  if (staticPlace?.latitude && staticPlace?.longitude) {
+    await loadWeather(normalizePlace(staticPlace), { remember: false });
+    return;
+  }
+
   const storedPlace = readJson(PLACE_KEY, null);
   if (storedPlace?.latitude && storedPlace?.longitude) {
     let place = normalizePlace(storedPlace);
@@ -89,6 +95,17 @@ async function boot() {
   }
 
   await searchAndLoad("Milano");
+}
+
+function readStaticPlace() {
+  const placeEl = document.querySelector("#pagePlace");
+  if (!placeEl?.textContent) return null;
+
+  try {
+    return JSON.parse(placeEl.textContent);
+  } catch {
+    return null;
+  }
 }
 
 async function searchAndLoad(query) {

@@ -310,6 +310,8 @@ Acceptance:
 
 ## Release 4 - SEO city pages soft
 
+Stato: completata in `v4.0`.
+
 Obiettivo: validare static generation senza trasformare subito il progetto in una piattaforma.
 
 Scope iniziale:
@@ -468,14 +470,14 @@ Acceptance:
 
 ## Immediate next release
 
-La prossima release da implementare e Release 4, dopo tua approvazione esplicita.
+La prossima release da implementare e Release 5, dopo tua approvazione esplicita.
 
 Batch operativo:
 
-1. Definire catalogo iniziale di 20-50 citta italiane.
-2. Decidere formato del catalogo citta.
-3. Progettare spike static generation minimo.
-4. Generare una o poche pagine city-specific.
-5. Verificare HTML city-specific in view source.
+1. Decidere CMP/consenso.
+2. Definire comportamento locale/staging.
+3. Implementare GA4 minimo solo se approvato.
+4. Tracciare eventi prodotto essenziali.
+5. Verificare assenza di coordinate nei payload.
 
 Effort stimato: M.

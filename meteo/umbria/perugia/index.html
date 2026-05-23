@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>Meteo Perugia: oggi e prossimi giorni | chetempofa</title>
+    <meta name="description" content="Previsioni per Perugia: temperatura, pioggia, vento e prossime ore. Dati Open-Meteo, senza account.">
+    <link rel="canonical" href="https://chetempofa.com/meteo/umbria/perugia/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="it_IT">
+    <meta property="og:site_name" content="chetempofa">
+    <meta property="og:title" content="Meteo Perugia: oggi e prossimi giorni | chetempofa">
+    <meta property="og:description" content="Previsioni per Perugia: temperatura, pioggia, vento e prossime ore. Dati Open-Meteo, senza account.">
+    <meta property="og:url" content="https://chetempofa.com/meteo/umbria/perugia/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Meteo Perugia: oggi e prossimi giorni | chetempofa">
+    <meta name="twitter:description" content="Previsioni per Perugia: temperatura, pioggia, vento e prossime ore. Dati Open-Meteo, senza account.">
+    <meta name="theme-color" content="#f3f7f2">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="application/json" id="pagePlace">{"name":"Perugia","admin1":"Umbria","admin2":"Provincia di Perugia","country":"Italia","country_code":"IT","latitude":43.1107,"longitude":12.3908,"population":161748,"slug":"perugia","region_slug":"umbria","source":"static"}</script>
+    <script src="script.js" defer></script>
+  </head>
+  <body data-condition="cloud">
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="chetempofa">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img">
+              <path d="M12 3.25a1 1 0 0 1 1 1v1.18a1 1 0 1 1-2 0V4.25a1 1 0 0 1 1-1Zm6.19 2.56a1 1 0 0 1 0 1.42l-.84.83a1 1 0 0 1-1.41-1.41l.83-.84a1 1 0 0 1 1.42 0ZM12 7.75a4.25 4.25 0 1 1 0 8.5 4.25 4.25 0 0 1 0-8.5Zm8.75 3.25a1 1 0 1 1 0 2h-1.18a1 1 0 1 1 0-2h1.18ZM7.23 5.81l.83.84a1 1 0 1 1-1.41 1.41l-.84-.83a1 1 0 1 1 1.42-1.42ZM4.43 11a1 1 0 1 1 0 2H3.25a1 1 0 1 1 0-2h1.18Zm3.63 6.35-.83.84a1 1 0 0 1-1.42-1.42l.84-.83a1 1 0 1 1 1.41 1.41Zm9.29-1.41.84.83a1 1 0 0 1-1.42 1.42l-.83-.84a1 1 0 1 1 1.41-1.41ZM12 17.57a1 1 0 0 1 1 1v1.18a1 1 0 1 1-2 0v-1.18a1 1 0 0 1 1-1Z"></path>
+            </svg>
+          </span>
+          <span>
+            <strong>chetempofa</strong>
+            <small>meteo senza sbatti</small>
+          </span>
+        </a>
+
+        <form class="search-form" id="searchForm" autocomplete="off">
+          <label class="sr-only" for="citySearch">Cerca una città</label>
+          <div class="input-shell">
+            <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10.8 4.5a6.3 6.3 0 1 1 0 12.6 6.3 6.3 0 0 1 0-12.6Zm0 2a4.3 4.3 0 1 0 0 8.6 4.3 4.3 0 0 0 0-8.6Zm5.37 8.26 3.78 3.77a1 1 0 0 1-1.42 1.42l-3.77-3.78a1 1 0 0 1 1.41-1.41Z"></path>
+            </svg>
+            <input id="citySearch" name="city" type="search" placeholder="Cerca Milano, Roma, Tokyo..." role="combobox" aria-autocomplete="list" aria-controls="suggestions" aria-expanded="false">
+            <button class="search-button" type="submit">Cerca</button>
+          </div>
+          <div class="suggestions" id="suggestions" role="listbox" hidden></div>
+        </form>
+
+        <div class="top-actions">
+          <button class="location-button" id="locationButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2.75a1 1 0 0 1 1 1v1.32a7 7 0 0 1 5.93 5.93h1.32a1 1 0 1 1 0 2h-1.32A7 7 0 0 1 13 18.93v1.32a1 1 0 1 1-2 0v-1.32A7 7 0 0 1 5.07 13H3.75a1 1 0 1 1 0-2h1.32A7 7 0 0 1 11 5.07V3.75a1 1 0 0 1 1-1Zm0 4.25a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2.75a2.25 2.25 0 1 1 0 4.5 2.25 2.25 0 0 1 0-4.5Z"></path>
+            </svg>
+            <span>Usa posizione</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <div class="status-row" id="status" role="status" aria-live="polite" hidden></div>
+
+        <section class="current-section" aria-labelledby="cityName">
+          <div class="current-copy">
+            <p class="kicker" id="locationMeta">Umbria, Provincia di Perugia, IT</p>
+            <h1 id="cityName">Meteo Perugia</h1>
+            <div class="temperature-readout">
+              <span id="currentTemp">--</span>
+              <span id="tempUnit">°C</span>
+            </div>
+            <p class="condition" id="conditionLabel">In attesa dei dati</p>
+            <p class="advice" id="weatherAdvice">Appena arrivano le previsioni ti dico come muoverti.</p>
+            <div class="current-actions">
+              <span id="updatedAt">--</span>
+            </div>
+          </div>
+
+          <div class="visual-pane" aria-hidden="true">
+            <img id="currentIcon" src="icons/animated/cloudy.svg" alt="">
+            <div class="sun-window">
+              <div>
+                <span>Alba</span>
+                <strong id="sunriseTime">--</strong>
+              </div>
+              <div>
+                <span>Tramonto</span>
+                <strong id="sunsetTime">--</strong>
+              </div>
+              <div>
+                <span>UV</span>
+                <strong id="uvIndex">--</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="recent-section" id="recentSection" hidden>
+          <h2 class="sr-only">Città recenti</h2>
+          <div class="recent-list" id="recentCities"></div>
+        </section>
+
+        <section class="metrics-grid" id="metricsGrid" aria-label="Dettagli meteo"></section>
+
+        <section class="forecast-section" aria-labelledby="forecastTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Sette giorni</p>
+              <h2 id="forecastTitle">Previsioni</h2>
+            </div>
+            <span id="forecastSummary">--</span>
+          </div>
+          <div class="daily-list" id="dailyList"></div>
+        </section>
+
+        <section class="timeline-section" aria-labelledby="timelineTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Ora per ora</p>
+              <h2 id="timelineTitle">Oggi</h2>
+            </div>
+            <span id="timelineSummary">--</span>
+          </div>
+          <div class="hourly-strip" id="hourlyStrip"></div>
+        </section>
+              <section class="seo-copy" aria-labelledby="seoTitle">
+          <p class="eyebrow">Meteo locale</p>
+          <h2 id="seoTitle">Meteo Perugia</h2>
+          <p>Consulta il meteo di Perugia, Umbria, con temperatura attuale, probabilità di pioggia, vento e previsioni ora per ora. chetempofa usa dati Open-Meteo e resta leggero: niente account, niente Fahrenheit, solo le informazioni utili per decidere come uscire.</p>
+        </section>
+      </main>
+
+      <footer class="app-footer" aria-label="Informazioni app">
+        <div class="footer-brand">
+          <strong>chetempofa</strong>
+          <span>Meteo pulito, dati pubblici, zero account.</span>
+        </div>
+        <div class="footer-meta">
+          <span>Dati meteo: Open-Meteo</span>
+          <span>Posizione: BigDataCloud</span>
+          <span id="timezoneLabel">Fuso orario locale</span>
+          <span id="footerUpdatedAt">Ultimo aggiornamento --</span>
+        </div>
+        <p class="footer-note">La posizione resta nel browser: non usiamo backend, login o chiavi API.</p>
+      </footer>
+    </div>
+  </body>
+</html>

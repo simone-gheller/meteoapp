@@ -513,6 +513,22 @@ svg {
   padding-top: 10px;
 }
 
+.seo-copy {
+  max-width: 760px;
+  padding-top: 10px;
+}
+
+.seo-copy h2 {
+  margin: 4px 0 0;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.seo-copy p:last-child {
+  margin: 10px 0 0;
+  color: #3c4741;
+  line-height: 1.65;
+}
+
 .section-heading {
   display: flex;
   justify-content: space-between;
