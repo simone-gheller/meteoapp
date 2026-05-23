@@ -43,6 +43,8 @@ const els = {
 };
 
 let suggestionRun = 0;
+let suggestionPlaces = [];
+let activeSuggestionIndex = -1;
 let statusTimer = 0;
 
 init();
@@ -64,9 +66,7 @@ function wireEvents() {
   });
 
   els.citySearch.addEventListener("input", debounce(renderSuggestions, 240));
-  els.citySearch.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") hideSuggestions();
-  });
+  els.citySearch.addEventListener("keydown", handleSearchKeydown);
 
   document.addEventListener("click", (event) => {
     if (!els.searchForm.contains(event.target)) hideSuggestions();
@@ -120,20 +120,25 @@ async function renderSuggestions() {
     return;
   }
 
+  activeSuggestionIndex = -1;
+  suggestionPlaces = [];
+  showSuggestionMessage("Cerco...", "Controllo le località più pertinenti.");
+
   try {
     const places = await searchPlaces(query, 5);
     if (run !== suggestionRun) return;
 
     if (!places.length) {
-      els.suggestions.innerHTML = `<button class="suggestion-button" type="button" disabled><strong>Nessun risultato</strong><span>Controlla il nome della città</span></button>`;
-      els.suggestions.hidden = false;
+      showSuggestionMessage("Nessun risultato", "Controlla il nome della città.");
       return;
     }
 
+    suggestionPlaces = places;
     els.suggestions.innerHTML = places
       .map((place, index) => {
+        const id = suggestionId(index);
         return `
-          <button class="suggestion-button" type="button" role="option" data-index="${index}">
+          <button class="suggestion-button" id="${id}" type="button" role="option" aria-selected="false" data-index="${index}">
             <strong>${escapeHtml(place.name)}</strong>
             <span>${escapeHtml(placeSubtitle(place))}</span>
           </button>
@@ -142,18 +147,95 @@ async function renderSuggestions() {
       .join("");
 
     els.suggestions.querySelectorAll("[data-index]").forEach((button) => {
+      button.addEventListener("mouseenter", () => {
+        setActiveSuggestion(Number(button.dataset.index));
+      });
+      button.addEventListener("focus", () => {
+        setActiveSuggestion(Number(button.dataset.index));
+      });
       button.addEventListener("click", () => {
-        const place = places[Number(button.dataset.index)];
-        hideSuggestions();
-        els.citySearch.value = "";
-        loadWeather(place);
+        selectSuggestion(Number(button.dataset.index));
       });
     });
 
-    els.suggestions.hidden = false;
+    setSuggestionsExpanded(true);
   } catch {
-    hideSuggestions();
+    if (run === suggestionRun) {
+      showSuggestionMessage("Suggerimenti non disponibili", "Premi Cerca per riprovare.");
+    }
   }
+}
+
+function handleSearchKeydown(event) {
+  if (event.key === "Escape") {
+    hideSuggestions();
+    return;
+  }
+
+  if (els.suggestions.hidden || !suggestionPlaces.length) return;
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    setActiveSuggestion((activeSuggestionIndex + 1) % suggestionPlaces.length);
+    return;
+  }
+
+  if (event.key === "ArrowUp") {
+    event.preventDefault();
+    setActiveSuggestion((activeSuggestionIndex - 1 + suggestionPlaces.length) % suggestionPlaces.length);
+    return;
+  }
+
+  if (event.key === "Enter") {
+    event.preventDefault();
+    selectSuggestion(activeSuggestionIndex >= 0 ? activeSuggestionIndex : 0);
+  }
+}
+
+function selectSuggestion(index) {
+  const place = suggestionPlaces[index];
+  if (!place) return;
+
+  hideSuggestions();
+  els.citySearch.value = "";
+  loadWeather(place);
+}
+
+function setActiveSuggestion(index) {
+  activeSuggestionIndex = index;
+
+  els.suggestions.querySelectorAll("[data-index]").forEach((button) => {
+    const selected = Number(button.dataset.index) === index;
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-selected", String(selected));
+  });
+
+  els.citySearch.setAttribute("aria-activedescendant", index >= 0 ? suggestionId(index) : "");
+}
+
+function showSuggestionMessage(title, subtitle) {
+  suggestionPlaces = [];
+  activeSuggestionIndex = -1;
+  els.suggestions.innerHTML = `
+    <div class="suggestion-button suggestion-message" role="option" aria-disabled="true">
+      <strong>${escapeHtml(title)}</strong>
+      <span>${escapeHtml(subtitle)}</span>
+    </div>
+  `;
+  setSuggestionsExpanded(true);
+}
+
+function setSuggestionsExpanded(isExpanded) {
+  els.suggestions.hidden = !isExpanded;
+  els.citySearch.setAttribute("aria-expanded", String(isExpanded));
+
+  if (!isExpanded) {
+    els.citySearch.setAttribute("aria-activedescendant", "");
+  }
+}
+
+function suggestionId(index) {
+  return `suggestion-${index}`;
 }
 
 async function searchPlaces(query, count) {
@@ -447,7 +529,8 @@ function renderRecent() {
   els.recentCities.innerHTML = recent
     .slice(0, 6)
     .map((place, index) => {
-      return `<button class="recent-button" type="button" data-recent="${index}">${escapeHtml(place.name)}</button>`;
+      const label = `${place.name}, ${placeSubtitle(place)}`;
+      return `<button class="recent-button" type="button" data-recent="${index}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${escapeHtml(place.name)}</button>`;
     })
     .join("");
 
@@ -818,8 +901,11 @@ function setLoading(isLoading) {
 
 function hideSuggestions() {
   suggestionRun += 1;
+  suggestionPlaces = [];
+  activeSuggestionIndex = -1;
   els.suggestions.hidden = true;
   els.suggestions.innerHTML = "";
+  setSuggestionsExpanded(false);
 }
 
 function debounce(callback, delay) {

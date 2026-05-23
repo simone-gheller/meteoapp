@@ -289,9 +289,15 @@ svg {
 }
 
 .suggestion-button:hover,
-.suggestion-button:focus-visible {
+.suggestion-button:focus-visible,
+.suggestion-button.is-active,
+.suggestion-button[aria-selected="true"] {
   background: rgba(0, 127, 122, 0.08);
   border-color: rgba(0, 127, 122, 0.28);
+}
+
+.suggestion-message {
+  cursor: default;
 }
 
 .dashboard {

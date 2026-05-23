@@ -255,6 +255,8 @@ Acceptance:
 
 ## Release 3 - Search hardening
 
+Stato: completata in `v3.0`.
+
 Obiettivo: rendere la ricerca adatta a un sito pubblico, senza introdurre route.
 
 Scope:
@@ -466,14 +468,14 @@ Acceptance:
 
 ## Immediate next release
 
-La prossima release da implementare e Release 3, dopo tua approvazione esplicita.
+La prossima release da implementare e Release 4, dopo tua approvazione esplicita.
 
 Batch operativo:
 
-1. Keyboard navigation suggerimenti.
-2. ARIA combobox/listbox.
-3. Stati loading/error suggerimenti.
-4. Omonimie piu chiare.
-5. Recenti piu leggibili se necessario.
+1. Definire catalogo iniziale di 20-50 citta italiane.
+2. Decidere formato del catalogo citta.
+3. Progettare spike static generation minimo.
+4. Generare una o poche pagine city-specific.
+5. Verificare HTML city-specific in view source.
 
 Effort stimato: M.
