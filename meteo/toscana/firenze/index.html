@@ -131,17 +131,43 @@
       </main>
 
       <footer class="app-footer" aria-label="Informazioni app">
-        <div class="footer-brand">
-          <strong>chetempofa</strong>
-          <span>Meteo pulito, dati pubblici, zero account.</span>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <strong>chetempofa</strong>
+            <span>Meteo semplice, chiaro e senza account.</span>
+          </div>
+
+          <nav class="footer-nav" aria-labelledby="footerProductTitle">
+            <h2 id="footerProductTitle">Prodotto</h2>
+            <a href="#forecastTitle">Previsioni</a>
+            <a href="#timelineTitle">Ora per ora</a>
+            <a href="#locationButton">Usa la posizione</a>
+          </nav>
+
+          <nav class="footer-nav" aria-labelledby="footerInfoTitle">
+            <h2 id="footerInfoTitle">Informazioni</h2>
+            <a href="https://open-meteo.com/en/licence" target="_blank" rel="noreferrer">Fonti dati</a>
+            <span>Privacy e cookie · in preparazione</span>
+            <span>Note legali · in preparazione</span>
+            <span>Contatti · in preparazione</span>
+          </nav>
         </div>
-        <div class="footer-meta">
-          <span>Dati meteo: Open-Meteo</span>
-          <span>Posizione: BigDataCloud</span>
-          <span id="timezoneLabel">Fuso orario locale</span>
-          <span id="footerUpdatedAt">Ultimo aggiornamento --</span>
+
+        <div class="footer-bottom">
+          <p class="footer-data">
+            Dati meteo e geocoding forniti da
+            <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a>
+            · dati API
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noreferrer">CC BY 4.0</a>.
+            Reverse geocoding posizione:
+            <a href="https://www.bigdatacloud.com/" target="_blank" rel="noreferrer">BigDataCloud</a>.
+          </p>
+          <p class="footer-status">
+            <span id="timezoneLabel">Fuso orario locale</span>
+            <span id="footerUpdatedAt">Ultimo aggiornamento --</span>
+          </p>
+          <p class="footer-legal">© 2026 chetempofa</p>
         </div>
-        <p class="footer-note">La posizione resta nel browser: non usiamo backend, login o chiavi API.</p>
       </footer>
     </div>
   </body>
