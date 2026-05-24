@@ -4,6 +4,18 @@ const REVERSE_GEOCODE_API = "https://api.bigdatacloud.net/data/reverse-geocode-c
 const RECENT_KEY = "chetempofa-recent";
 const PLACE_KEY = "chetempofa-place";
 const SEARCH_RESULT_POOL = 20;
+const ANALYTICS_CONFIG = Object.freeze({
+  enabled: window.CHE_TEMPOFA_ANALYTICS?.enabled === true,
+  debug: window.CHE_TEMPOFA_ANALYTICS?.debug === true,
+});
+const ANALYTICS_PARAM_ALLOWLIST = Object.freeze({
+  weather_city_viewed: ["city_slug", "region_slug", "country_code", "source", "page_type"],
+  city_search_submitted: ["query_length", "result_count", "result"],
+  city_suggestion_selected: ["city_slug", "region_slug", "country_code", "rank"],
+  geolocation_used: ["result"],
+  forecast_day_selected: ["day_index"],
+  weather_api_error: ["api", "context", "has_cached_weather"],
+});
 
 const state = {
   place: null,
@@ -62,7 +74,7 @@ function wireEvents() {
     if (!query) return;
 
     hideSuggestions();
-    await searchAndLoad(query);
+    await searchAndLoad(query, { trackSearch: true });
   });
 
   els.citySearch.addEventListener("input", debounce(renderSuggestions, 240));
@@ -94,7 +106,7 @@ async function boot() {
     return;
   }
 
-  await searchAndLoad("Milano");
+  await searchAndLoad("Milano", { trackSearch: false });
 }
 
 function readStaticPlace() {
@@ -108,20 +120,49 @@ function readStaticPlace() {
   }
 }
 
-async function searchAndLoad(query) {
+async function searchAndLoad(query, options = {}) {
+  const { trackSearch = true } = options;
+
   try {
     setLoading(true);
     setStatus(`Cerco "${query}"...`);
     const places = await searchPlaces(query, 1);
 
     if (!places.length) {
+      if (trackSearch) {
+        trackEvent("city_search_submitted", {
+          query_length: query.length,
+          result_count: 0,
+          result: "empty",
+        });
+      }
       setStatus("Città non trovata. Prova con un nome più preciso.", "error");
       return;
+    }
+
+    if (trackSearch) {
+      trackEvent("city_search_submitted", {
+        query_length: query.length,
+        result_count: places.length,
+        result: "success",
+      });
     }
 
     await loadWeather(places[0]);
     els.citySearch.value = "";
   } catch (error) {
+    if (trackSearch) {
+      trackEvent("city_search_submitted", {
+        query_length: query.length,
+        result_count: 0,
+        result: "error",
+      });
+      trackEvent("weather_api_error", {
+        api: "geocoding",
+        context: "city_search",
+        has_cached_weather: Boolean(state.weather),
+      });
+    }
     setStatus(humanError(error), "error");
   } finally {
     setLoading(false);
@@ -215,6 +256,10 @@ function selectSuggestion(index) {
 
   hideSuggestions();
   els.citySearch.value = "";
+  trackEvent("city_suggestion_selected", {
+    ...placeAnalyticsPayload(place),
+    rank: index + 1,
+  });
   loadWeather(place);
 }
 
@@ -329,9 +374,18 @@ async function loadWeather(place, options = {}) {
 
     localStorage.setItem(PLACE_KEY, JSON.stringify(state.place));
     renderAll();
+    trackEvent("weather_city_viewed", {
+      ...placeAnalyticsPayload(state.place),
+      page_type: readStaticPlace() ? "city_static" : "app",
+    });
     clearStatus();
   } catch (error) {
     console.error(error);
+    trackEvent("weather_api_error", {
+      api: "forecast",
+      context: "load_weather",
+      has_cached_weather: Boolean(state.weather),
+    });
     setStatus(humanError(error, Boolean(state.weather)), "error");
   } finally {
     setLoading(false);
@@ -458,7 +512,11 @@ function renderDaily() {
 
   els.dailyList.querySelectorAll("[data-day]").forEach((button) => {
     button.addEventListener("click", () => {
-      state.selectedDay = Number(button.dataset.day);
+      const selectedDay = Number(button.dataset.day);
+      if (state.selectedDay !== selectedDay) {
+        trackEvent("forecast_day_selected", { day_index: selectedDay });
+      }
+      state.selectedDay = selectedDay;
       renderDaily();
       renderHourly();
     });
@@ -560,6 +618,7 @@ function renderRecent() {
 
 function useCurrentPosition() {
   if (!navigator.geolocation) {
+    trackEvent("geolocation_used", { result: "unsupported" });
     setStatus("Geolocalizzazione non disponibile in questo browser.", "error");
     return;
   }
@@ -571,13 +630,24 @@ function useCurrentPosition() {
     async (position) => {
       const { latitude, longitude } = position.coords;
       const place = await reverseGeocodePosition(latitude, longitude)
-        .catch(() => gpsFallbackPlace(latitude, longitude));
+        .catch(() => {
+          trackEvent("weather_api_error", {
+            api: "reverse_geocode",
+            context: "geolocation",
+            has_cached_weather: Boolean(state.weather),
+          });
+          return gpsFallbackPlace(latitude, longitude);
+        });
 
+      trackEvent("geolocation_used", { result: "allowed" });
       await loadWeather(place);
       setLoading(false);
     },
-    () => {
+    (error) => {
       setLoading(false);
+      trackEvent("geolocation_used", {
+        result: error?.code === 1 ? "denied" : "error",
+      });
       setStatus("Posizione non autorizzata. Puoi cercare una città a mano.", "error");
     },
     { enableHighAccuracy: false, timeout: 9000, maximumAge: 600000 },
@@ -834,6 +904,58 @@ function placeSubtitle(place) {
     .filter((part, index, list) => list.indexOf(part) === index);
 
   return parts.join(", ") || formatCoordinates(place);
+}
+
+function trackEvent(name, params = {}) {
+  const safeParams = sanitizeAnalyticsParams(name, params);
+
+  if (!ANALYTICS_CONFIG.enabled) {
+    if (ANALYTICS_CONFIG.debug) {
+      console.info("[analytics disabled]", name, safeParams);
+    }
+    return;
+  }
+
+  if (typeof window.gtag === "function") {
+    window.gtag("event", name, safeParams);
+  }
+}
+
+function sanitizeAnalyticsParams(name, params) {
+  const allowedParams = ANALYTICS_PARAM_ALLOWLIST[name] || [];
+
+  return allowedParams.reduce((safeParams, key) => {
+    if (!Object.prototype.hasOwnProperty.call(params, key)) return safeParams;
+
+    const value = params[key];
+    if (typeof value === "string") {
+      safeParams[key] = value.slice(0, 80);
+    } else if (Number.isFinite(value)) {
+      safeParams[key] = value;
+    } else if (typeof value === "boolean") {
+      safeParams[key] = value;
+    }
+
+    return safeParams;
+  }, {});
+}
+
+function placeAnalyticsPayload(place) {
+  const normalized = normalizePlace(place);
+
+  return {
+    city_slug: analyticsSlug(normalized.slug || normalized.name),
+    region_slug: analyticsSlug(normalized.region_slug || normalized.admin1),
+    country_code: String(normalized.country_code || "").toUpperCase().slice(0, 2),
+    source: normalized.source || "search",
+  };
+}
+
+function analyticsSlug(value) {
+  return normalizeSearchText(value)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80) || "unknown";
 }
 
 function normalizeSearchText(value) {

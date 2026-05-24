@@ -367,13 +367,52 @@ Acceptance:
 - deploy statico resta semplice;
 - performance non peggiora in modo significativo.
 
-## Release 5 - GA4 e misurazione
+## Release 5 - Analytics readiness soft
+
+Stato: completata in `v5.0`.
+
+Obiettivo: preparare la misurazione prodotto senza attivare GA4, senza caricare script esterni e senza inviare dati.
+
+Decisione:
+
+- Release 5A soft approvata;
+- GA4 reale rimandato a una release successiva;
+- consenso/CMP ancora da decidere prima di qualunque tracking in produzione.
+
+Scope completato:
+
+- wrapper `trackEvent()` disattivato di default;
+- allowlist dei parametri evento;
+- hook privacy-safe sui principali eventi prodotto;
+- nessuna query raw;
+- nessuna latitudine, longitudine o accuracy;
+- nessun Measurement ID;
+- nessun tag GA4.
+
+Eventi predisposti:
+
+- `weather_city_viewed`;
+- `city_search_submitted`;
+- `city_suggestion_selected`;
+- `geolocation_used`;
+- `forecast_day_selected`;
+- `weather_api_error`.
+
+Acceptance:
+
+- produzione non invia analytics;
+- eventi futuri passano da una sola funzione;
+- i payload ammessi sono documentati nel codice;
+- `node --check script.js` passa.
+
+## Release 5B - GA4 e misurazione reale
 
 Obiettivo: misurare l'uso reale senza inviare dati sensibili.
 
 Prerequisito:
 
 - decisione CMP/consenso approvata.
+- Measurement ID GA4 disponibile.
 
 Scope:
 
@@ -465,19 +504,14 @@ Acceptance:
 3. Release 2: deploy statico Cloudflare Pages.
 4. Release 3: search hardening.
 5. Release 4: static generation soft per city pages.
-6. Release 5: GA4 dopo consenso.
+6. Release 5: analytics readiness soft, senza tracking attivo.
 7. Release 6: monetizzazione cauta.
+8. Release 5B: GA4 reale dopo consenso e Measurement ID.
 
 ## Immediate next release
 
-La prossima release da implementare e Release 5, dopo tua approvazione esplicita.
+La prossima release da scegliere e una tra:
 
-Batch operativo:
-
-1. Decidere CMP/consenso.
-2. Definire comportamento locale/staging.
-3. Implementare GA4 minimo solo se approvato.
-4. Tracciare eventi prodotto essenziali.
-5. Verificare assenza di coordinate nei payload.
-
-Effort stimato: M.
+1. Release 6: monetization readiness, solo placeholder/documentazione, se si vuole preparare ads senza attivarli.
+2. Release 5B: GA4 reale, solo dopo Measurement ID e decisione consenso/CMP.
+3. Release 4B: estensione controllata delle city pages, se si vuole ampliare il catalogo statico.
