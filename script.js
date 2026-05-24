@@ -4,6 +4,10 @@ const REVERSE_GEOCODE_API = "https://api.bigdatacloud.net/data/reverse-geocode-c
 const RECENT_KEY = "chetempofa-recent";
 const PLACE_KEY = "chetempofa-place";
 const SEARCH_RESULT_POOL = 20;
+const HOURLY_WINDOW_SIZE = 24;
+const HOUR_COLUMN_WIDTH = 78;
+const HOURLY_CHART_HEIGHT = 160;
+const HOURLY_LOADING_DELAY = 200;
 const ANALYTICS_CONFIG = Object.freeze({
   enabled: window.CHE_TEMPOFA_ANALYTICS?.enabled === true,
   debug: window.CHE_TEMPOFA_ANALYTICS?.debug === true,
@@ -21,6 +25,7 @@ const state = {
   place: null,
   weather: null,
   selectedDay: 0,
+  selectedHourIndex: null,
   recent: readJson(RECENT_KEY, []),
 };
 
@@ -58,6 +63,7 @@ let suggestionRun = 0;
 let suggestionPlaces = [];
 let activeSuggestionIndex = -1;
 let statusTimer = 0;
+let hourlyRenderTimer = 0;
 
 init();
 
@@ -367,6 +373,7 @@ async function loadWeather(place, options = {}) {
     state.place = normalizePlace(place);
     state.weather = weather;
     state.selectedDay = 0;
+    state.selectedHourIndex = null;
 
     if (remember) {
       rememberPlace(state.place);
@@ -445,7 +452,7 @@ function renderMetrics() {
       note: comfortLabel(current.apparent_temperature),
     },
     {
-      label: "Umidita",
+      label: "Umidità",
       value: `${Math.round(current.relative_humidity_2m)}%`,
       note: humidityLabel(current.relative_humidity_2m),
     },
@@ -490,21 +497,25 @@ function renderDaily() {
     .map((date, index) => {
       const info = weatherInfo(daily.weather_code[index], true);
       const selected = index === state.selectedDay;
+      const rainChance = Math.round(daily.precipitation_probability_max[index] ?? 0);
+      const rainLabel = compactRainLabel(rainChance);
       const dayName = index === 0
         ? "Oggi"
         : formatDateTime(date, timezone, { weekday: "short" }).replace(".", "");
+      const maxTemp = daily.temperature_2m_max[index];
+      const minTemp = daily.temperature_2m_min[index];
 
       return `
-        <button class="day-card" type="button" aria-pressed="${selected}" data-day="${index}">
-          <strong>${dayName}</strong>
+        <button class="day-card" type="button" aria-pressed="${selected}" data-day="${index}" aria-label="${escapeHtml(dayForecastLabel(dayName, info.label, maxTemp, minTemp, rainChance))}">
+          <strong>${escapeHtml(dayName)}</strong>
           <div class="day-main">
             <img src="${info.icon}" alt="${info.label}">
             <div class="day-temps" aria-label="Temperature previste">
-              <span class="day-temp day-temp-min">${formatTemp(daily.temperature_2m_min[index])}${tempUnitLabel()}</span>
-              <span class="day-temp day-temp-max">${formatTemp(daily.temperature_2m_max[index])}${tempUnitLabel()}</span>
+              <span class="day-temp day-temp-max">${formatDegree(maxTemp)}</span>
+              <span class="day-temp day-temp-min">${formatDegree(minTemp)}</span>
             </div>
           </div>
-          <div class="rain-chance">${Math.round(daily.precipitation_probability_max[index] ?? 0)}% pioggia</div>
+          <div class="rain-chance${rainLabel.muted ? " is-muted" : ""}" aria-label="Probabilità pioggia ${rainChance}%">${rainLabel.text}</div>
         </button>
       `;
     })
@@ -513,17 +524,68 @@ function renderDaily() {
   els.dailyList.querySelectorAll("[data-day]").forEach((button) => {
     button.addEventListener("click", () => {
       const selectedDay = Number(button.dataset.day);
-      if (state.selectedDay !== selectedDay) {
-        trackEvent("forecast_day_selected", { day_index: selectedDay });
-      }
+      if (state.selectedDay === selectedDay) return;
+
+      trackEvent("forecast_day_selected", { day_index: selectedDay });
       state.selectedDay = selectedDay;
+      state.selectedHourIndex = null;
       renderDaily();
-      renderHourly();
+      renderHourlyWithLoading();
     });
   });
 }
 
+function renderHourlyWithLoading() {
+  clearHourlyRenderTimer();
+  renderHourlySkeleton();
+  hourlyRenderTimer = window.setTimeout(() => {
+    hourlyRenderTimer = 0;
+    renderHourly();
+  }, HOURLY_LOADING_DELAY);
+}
+
+function clearHourlyRenderTimer() {
+  if (!hourlyRenderTimer) return;
+
+  window.clearTimeout(hourlyRenderTimer);
+  hourlyRenderTimer = 0;
+}
+
+function renderHourlySkeleton() {
+  const daily = state.weather.daily;
+  const timezone = state.weather.timezone || "auto";
+  const date = daily.time[state.selectedDay];
+  const title = state.selectedDay === 0
+    ? "Prossime 24 ore"
+    : formatDateTime(date, timezone, { weekday: "long", day: "numeric", month: "short" });
+  const topRain = daily.precipitation_probability_max[state.selectedDay] ?? 0;
+
+  els.timelineTitle.textContent = title;
+  els.timelineSummary.textContent = `Giornata completa · ${rainSummary(topRain)}`;
+  els.hourlyStrip.innerHTML = `
+    <div class="hourly-skeleton" role="status" aria-live="polite">
+      <span class="sr-only">Aggiorno le previsioni ora per ora</span>
+      <div class="hourly-skeleton-chart" aria-hidden="true">
+        <span class="hourly-skeleton-line"></span>
+        <span class="hourly-skeleton-dot" style="--dot-x: 8%; --dot-y: 42%;"></span>
+        <span class="hourly-skeleton-dot" style="--dot-x: 24%; --dot-y: 48%;"></span>
+        <span class="hourly-skeleton-dot" style="--dot-x: 40%; --dot-y: 52%;"></span>
+        <span class="hourly-skeleton-dot" style="--dot-x: 56%; --dot-y: 50%;"></span>
+        <span class="hourly-skeleton-dot" style="--dot-x: 72%; --dot-y: 44%;"></span>
+        <span class="hourly-skeleton-dot" style="--dot-x: 88%; --dot-y: 38%;"></span>
+      </div>
+      <div class="hourly-skeleton-detail" aria-hidden="true">
+        <span class="hourly-loading-spinner"></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  `;
+}
+
 function renderHourly() {
+  clearHourlyRenderTimer();
+
   const hourly = state.weather.hourly;
   const daily = state.weather.daily;
   const timezone = state.weather.timezone || "auto";
@@ -532,15 +594,13 @@ function renderHourly() {
   const selectedHours = hourlyWindow(hourly, date, state.selectedDay, currentTime);
 
   const title = state.selectedDay === 0
-    ? "Prossime ore"
+    ? "Prossime 24 ore"
     : formatDateTime(date, timezone, { weekday: "long", day: "numeric", month: "short" });
-  const topRain = selectedHours.reduce((max, item) => {
-    return Math.max(max, hourly.precipitation_probability[item.index] ?? 0);
-  }, 0);
+  const topRain = daily.precipitation_probability_max[state.selectedDay] ?? 0;
 
   els.timelineTitle.textContent = title;
   els.timelineSummary.textContent = selectedHours.length
-    ? `${state.selectedDay === 0 ? "Da adesso" : "Dal mattino"} · picco pioggia ${Math.round(topRain)}%`
+    ? `Giornata completa · ${rainSummary(topRain)}`
     : "Ore non disponibili";
 
   if (!selectedHours.length) {
@@ -553,22 +613,187 @@ function renderHourly() {
     return;
   }
 
-  els.hourlyStrip.innerHTML = selectedHours
-    .map((item) => {
-      const isDay = isHourDay(item.time);
-      const info = weatherInfo(hourly.weather_code[item.index], isDay);
-      const wind = Math.round(hourly.wind_speed_10m[item.index] ?? 0);
-      return `
-        <article class="hour-card">
-          <span>${formatDateTime(item.time, timezone, { hour: "2-digit", minute: "2-digit" })}</span>
-          <img src="${info.icon}" alt="${info.label}">
-          <strong>${formatTemp(hourly.temperature_2m[item.index])}${tempUnitLabel()}</strong>
-          <em>${Math.round(hourly.precipitation_probability[item.index] ?? 0)}% pioggia</em>
-          <small>${wind} km/h vento</small>
-        </article>
-      `;
-    })
-    .join("");
+  const hasSelectedHour = selectedHours.some((item) => item.index === state.selectedHourIndex);
+  if (!hasSelectedHour) {
+    state.selectedHourIndex = selectedHours[0].index;
+  }
+
+  const selectedItem = selectedHours.find((item) => item.index === state.selectedHourIndex) || selectedHours[0];
+  const panelWidth = selectedHours.length * HOUR_COLUMN_WIDTH;
+  const chart = hourlyChart(selectedHours, hourly, panelWidth);
+  const detail = hourDetail(selectedItem, hourly, timezone, state.selectedDay === 0 && selectedItem.index === selectedHours[0].index);
+
+  els.hourlyStrip.innerHTML = `
+    <div class="hourly-panel" style="--hour-count: ${selectedHours.length}; --hour-width: ${panelWidth}px;">
+      <button class="hourly-nav hourly-nav-prev" type="button" data-hour-scroll="-1" aria-label="Ore precedenti" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.7 5.3a1 1 0 0 1 0 1.4L10.42 12l5.3 5.3a1 1 0 1 1-1.42 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.42 0Z"></path>
+        </svg>
+      </button>
+      <div class="hourly-scroll" data-hourly-scroll tabindex="0" role="region" aria-label="Scorri le ore">
+        <div class="hourly-track">
+          <div class="hourly-chart" role="group" aria-label="Andamento temperatura ora per ora">
+            <svg class="temperature-chart" viewBox="0 0 ${panelWidth} ${HOURLY_CHART_HEIGHT}" preserveAspectRatio="xMinYMin meet" focusable="false" aria-hidden="true">
+              <polyline class="temperature-line" points="${chart.points}"></polyline>
+            </svg>
+            ${selectedHours
+              .map((item) => {
+                const isDay = isHourDay(item.time);
+                const info = weatherInfo(hourly.weather_code[item.index], isDay);
+                const wind = Math.round(hourly.wind_speed_10m[item.index] ?? 0);
+                const rainChance = Math.round(hourly.precipitation_probability[item.index] ?? 0);
+                const isCurrent = state.selectedDay === 0 && item.index === selectedHours[0].index;
+                const isSelected = item.index === state.selectedHourIndex;
+                const point = chart.coords.find((coord) => coord.index === item.index);
+
+                return `
+                  <button class="hour-point${isCurrent ? " is-current" : ""}" type="button" data-hour-index="${item.index}" aria-pressed="${isSelected}" aria-label="${escapeHtml(hourForecastLabel(item.time, timezone, info.label, hourly.temperature_2m[item.index], rainChance, wind, isCurrent))}" style="--point-y: ${toChartNumber(point.y)}px;">
+                    <span class="hour-temp-label">${formatDegree(hourly.temperature_2m[item.index])}</span>
+                    <span class="hour-dot" aria-hidden="true"></span>
+                    <img class="hour-icon" src="${info.icon}" alt="${info.label}">
+                    <time class="hour-time" datetime="${item.time}">${isCurrent ? "Adesso" : formatDateTime(item.time, timezone, { hour: "2-digit", minute: "2-digit" })}</time>
+                  </button>
+                `;
+              })
+              .join("")}
+          </div>
+        </div>
+      </div>
+      <button class="hourly-nav hourly-nav-next" type="button" data-hour-scroll="1" aria-label="Ore successive" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8.3 18.7a1 1 0 0 1 0-1.4l5.28-5.3-5.3-5.3a1 1 0 0 1 1.42-1.4l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 0 1-1.42 0Z"></path>
+        </svg>
+      </button>
+      <div class="hourly-detail" aria-live="polite">
+        <div class="hourly-detail-main">
+          <time datetime="${selectedItem.time}">${escapeHtml(detail.time)}</time>
+          <strong>${escapeHtml(detail.temperature)}</strong>
+          <span>${escapeHtml(detail.condition)}</span>
+        </div>
+        <div class="hourly-detail-meta">${escapeHtml(detail.meta)}</div>
+      </div>
+    </div>
+  `;
+
+  const scrollEl = els.hourlyStrip.querySelector("[data-hourly-scroll]");
+  const navButtons = els.hourlyStrip.querySelectorAll("[data-hour-scroll]");
+  updateHourlyScrollState(scrollEl);
+
+  scrollEl.addEventListener("scroll", () => {
+    updateHourlyScrollState(scrollEl);
+  });
+
+  navButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      scrollEl.scrollLeft += Number(button.dataset.hourScroll) * HOUR_COLUMN_WIDTH * 4;
+      window.setTimeout(() => updateHourlyScrollState(scrollEl), 120);
+    });
+  });
+
+  els.hourlyStrip.querySelectorAll("[data-hour-index]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const scrollLeft = scrollEl.scrollLeft;
+      state.selectedHourIndex = Number(button.dataset.hourIndex);
+      renderHourly();
+      const nextScrollEl = els.hourlyStrip.querySelector("[data-hourly-scroll]");
+      nextScrollEl.scrollLeft = scrollLeft;
+      updateHourlyScrollState(nextScrollEl);
+    });
+  });
+}
+
+function updateHourlyScrollState(scrollEl) {
+  if (!scrollEl) return;
+
+  const panel = scrollEl.closest(".hourly-panel");
+  const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+  const canScrollLeft = scrollEl.scrollLeft > 2;
+  const canScrollRight = scrollEl.scrollLeft < maxScroll - 2;
+
+  panel.classList.toggle("can-scroll-left", canScrollLeft);
+  panel.classList.toggle("can-scroll-right", canScrollRight);
+  panel.querySelector(".hourly-nav-prev").hidden = !canScrollLeft;
+  panel.querySelector(".hourly-nav-next").hidden = !canScrollRight;
+}
+
+function compactRainLabel(value) {
+  const chance = Math.round(value ?? 0);
+
+  if (chance <= 0) {
+    return { text: "—", muted: true };
+  }
+
+  return {
+    text: `${chance}%`,
+    muted: chance < 10,
+  };
+}
+
+function rainSummary(value) {
+  const chance = Math.round(value ?? 0);
+
+  if (chance <= 0) return "Pioggia assente";
+  return `Picco pioggia ${chance}%`;
+}
+
+function dayForecastLabel(dayName, condition, maxTemp, minTemp, rainChance) {
+  return `${dayName}: ${condition}, massima ${formatTemp(maxTemp)}${tempUnitLabel()}, minima ${formatTemp(minTemp)}${tempUnitLabel()}, pioggia ${rainChance}%`;
+}
+
+function hourForecastLabel(time, timezone, condition, temperature, rainChance, wind, isCurrent = false) {
+  const hour = isCurrent ? "Adesso" : formatDateTime(time, timezone, { hour: "2-digit", minute: "2-digit" });
+  return `${hour}: ${condition}, ${formatTemp(temperature)}${tempUnitLabel()}, pioggia ${rainChance}%, vento ${wind} km/h`;
+}
+
+function hourDetail(item, hourly, timezone, isCurrent = false) {
+  const isDay = isHourDay(item.time);
+  const info = weatherInfo(hourly.weather_code[item.index], isDay);
+  const time = isCurrent ? "Adesso" : formatDateTime(item.time, timezone, { hour: "2-digit", minute: "2-digit" });
+  const temperature = `${formatTemp(hourly.temperature_2m[item.index])}${tempUnitLabel()}`;
+  const rainChance = Math.round(hourly.precipitation_probability[item.index] ?? 0);
+  const rain = rainChance <= 0 ? "Pioggia assente" : `Pioggia ${rainChance}%`;
+  const wind = Math.round(hourly.wind_speed_10m[item.index] ?? 0);
+  const humidityValue = hourly.relative_humidity_2m[item.index];
+  const humidity = isNumber(humidityValue) ? `${Math.round(humidityValue)}%` : "--";
+
+  return {
+    condition: info.label,
+    meta: `${rain} · Vento ${wind} km/h · Umidità ${humidity}`,
+    temperature,
+    time,
+  };
+}
+
+function hourlyChart(selectedHours, hourly, panelWidth) {
+  const temps = selectedHours.map((item) => Number(hourly.temperature_2m[item.index]) || 0);
+  const minTemp = Math.min(...temps);
+  const maxTemp = Math.max(...temps);
+  const padding = Math.max(1, (maxTemp - minTemp) * 0.12);
+  const chartMin = minTemp - padding;
+  const chartMax = maxTemp + padding;
+  const range = chartMax - chartMin || 1;
+  const top = 34;
+  const bottom = 96;
+  const coords = temps.map((temp, index) => {
+    const x = HOUR_COLUMN_WIDTH / 2 + HOUR_COLUMN_WIDTH * index;
+    const y = bottom - ((temp - chartMin) / range) * (bottom - top);
+
+    return { index: selectedHours[index].index, x, y };
+  });
+  const points = coords.map((point) => `${toChartNumber(point.x)},${toChartNumber(point.y)}`).join(" ");
+
+  return {
+    coords,
+    height: HOURLY_CHART_HEIGHT,
+    maxTemp,
+    minTemp,
+    panelWidth,
+    points,
+  };
+}
+
+function toChartNumber(value) {
+  return Number(value).toFixed(1);
 }
 
 function hourlyWindow(hourly, date, selectedDay, currentTime) {
@@ -577,16 +802,11 @@ function hourlyWindow(hourly, date, selectedDay, currentTime) {
   if (selectedDay === 0) {
     return entries
       .filter((item) => weatherDate(item.time).getTime() >= currentTime)
-      .slice(0, 12);
+      .slice(0, HOURLY_WINDOW_SIZE);
   }
 
   const dayEntries = entries.filter((item) => item.time.startsWith(date));
-  const daytimeEntries = dayEntries.filter((item) => {
-    const hour = weatherDate(item.time).getHours();
-    return hour >= 6 && hour <= 23;
-  });
-
-  return (daytimeEntries.length ? daytimeEntries : dayEntries).slice(0, 12);
+  return dayEntries.slice(0, HOURLY_WINDOW_SIZE);
 }
 
 function renderRecent() {
@@ -976,6 +1196,10 @@ function formatCoordinates(place) {
 
 function formatTemp(value) {
   return String(Math.round(value));
+}
+
+function formatDegree(value) {
+  return `${formatTemp(value)}°`;
 }
 
 function tempUnitLabel() {
