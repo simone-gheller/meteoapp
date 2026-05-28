@@ -454,6 +454,36 @@ Acceptance:
 - nessuna latitudine/longitudine/accuracy nei payload;
 - `node --check script.js` passa.
 
+## Release 5.1 - Public launch polish
+
+Stato: completata in `v5.1`.
+
+Obiettivo: sistemare i piccoli problemi emersi dopo il deploy pubblico senza aprire GA4, ads o nuove feature.
+
+Scope completato:
+
+- favicon SVG minimale;
+- link logo verso homepage;
+- redirect statici dagli alias brevi `/regione/citta/` agli URL canonici `/meteo/regione/citta/`;
+- rigenerazione pagine citta e sitemap con `lastmod` aggiornato.
+
+Non-goals:
+
+- cambio architettura;
+- GA4 reale;
+- ads;
+- ampliamento catalogo citta;
+- modifica DNS `www`, da completare in Cloudflare dashboard.
+
+Acceptance:
+
+- `/lazio/roma/` redirige a `/meteo/lazio/roma/` dopo deploy Cloudflare;
+- favicon raggiungibile da `/favicon.svg`;
+- pagine citta mantengono canonical e dati statici;
+- `node --check script.js` passa;
+- `node --check tools/generate-city-pages.js` passa;
+- `xmllint --noout sitemap.xml` passa.
+
 ## Release 6 - Monetization readiness
 
 Obiettivo: valutare monetizzazione senza tradire il brand.
@@ -505,8 +535,9 @@ Acceptance:
 4. Release 3: search hardening.
 5. Release 4: static generation soft per city pages.
 6. Release 5: analytics readiness soft, senza tracking attivo.
-7. Release 6: monetizzazione cauta.
-8. Release 5B: GA4 reale dopo consenso e Measurement ID.
+7. Release 5.1: public launch polish.
+8. Release 6: monetizzazione cauta.
+9. Release 5B: GA4 reale dopo consenso e Measurement ID.
 
 ## Immediate next release
 

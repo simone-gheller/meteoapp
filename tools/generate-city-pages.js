@@ -6,7 +6,8 @@ const ROOT = path.resolve(__dirname, "..");
 const INDEX_PATH = path.join(ROOT, "index.html");
 const CITIES_PATH = path.join(ROOT, "data", "cities.json");
 const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
-const LASTMOD = "2026-05-23";
+const REDIRECTS_PATH = path.join(ROOT, "_redirects");
+const LASTMOD = "2026-05-28";
 
 const template = fs.readFileSync(INDEX_PATH, "utf8");
 const cities = JSON.parse(fs.readFileSync(CITIES_PATH, "utf8"));
@@ -19,6 +20,7 @@ for (const city of cities) {
 }
 
 fs.writeFileSync(SITEMAP_PATH, buildSitemap(cities));
+fs.writeFileSync(REDIRECTS_PATH, buildRedirects(cities));
 
 function buildCityPage(city) {
   const pathName = cityPath(city);
@@ -54,6 +56,22 @@ function buildSitemap(items) {
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n  </url>`).join("\n")}\n</urlset>\n`;
+}
+
+function buildRedirects(items) {
+  const lines = [
+    "# Legacy city aliases",
+    "# Keep canonical city URLs under /meteo/{region}/{city}/",
+  ];
+
+  for (const city of items) {
+    const alias = `/${city.region_slug}/${city.slug}`;
+    const canonical = cityPath(city);
+    lines.push(`${alias} ${canonical} 301`);
+    lines.push(`${alias}/ ${canonical} 301`);
+  }
+
+  return `${lines.join("\n")}\n`;
 }
 
 function cityPath(city) {
