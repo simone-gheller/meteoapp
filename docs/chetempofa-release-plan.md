@@ -484,6 +484,32 @@ Acceptance:
 - `node --check tools/generate-city-pages.js` passa;
 - `xmllint --noout sitemap.xml` passa.
 
+## Release 5.2 - Brand mark consistency
+
+Stato: completata in `v5.2`.
+
+Obiettivo: usare un solo design per logo header e favicon.
+
+Scope completato:
+
+- favicon SVG ridisegnata come mark giallo con sole scuro;
+- header brand mark basato sullo stesso asset `/favicon.svg`;
+- city pages rigenerate dal template aggiornato.
+
+Non-goals:
+
+- redesign completo del brand;
+- cambio tipografia;
+- logo wordmark separato;
+- asset raster o nuove dipendenze.
+
+Acceptance:
+
+- header e favicon usano lo stesso mark visivo;
+- homepage e city pages mantengono CSS e favicon corretti;
+- `xmllint --noout favicon.svg` passa;
+- `node --check script.js` passa.
+
 ## Release 6 - Monetization readiness
 
 Obiettivo: valutare monetizzazione senza tradire il brand.
@@ -536,8 +562,9 @@ Acceptance:
 5. Release 4: static generation soft per city pages.
 6. Release 5: analytics readiness soft, senza tracking attivo.
 7. Release 5.1: public launch polish.
-8. Release 6: monetizzazione cauta.
-9. Release 5B: GA4 reale dopo consenso e Measurement ID.
+8. Release 5.2: brand mark consistency.
+9. Release 6: monetizzazione cauta.
+10. Release 5B: GA4 reale dopo consenso e Measurement ID.
 
 ## Immediate next release
 

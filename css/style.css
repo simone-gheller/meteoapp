@@ -143,20 +143,19 @@ svg {
 }
 
 .brand-mark {
-  display: grid;
+  display: block;
   width: 44px;
   height: 44px;
-  place-items: center;
-  color: #2b2d1f;
-  background: var(--warm);
-  border: 1px solid rgba(23, 33, 29, 0.16);
   border-radius: 8px;
   box-shadow: 0 10px 24px rgba(255, 176, 0, 0.24);
+  overflow: hidden;
+  flex: 0 0 auto;
 }
 
-.brand-mark svg {
-  width: 24px;
-  height: 24px;
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .brand strong,
