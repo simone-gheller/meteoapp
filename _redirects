@@ -1,3 +1,6 @@
+# Keep the exact Google Search Console verification URL.
+/googlec6278b16ee9c24ea.html /googlec6278b16ee9c24ea 200
+
 # Legacy city aliases
 # Keep canonical city URLs under /meteo/{region}/{city}/
 /lombardia/milano /meteo/lombardia/milano/ 301
