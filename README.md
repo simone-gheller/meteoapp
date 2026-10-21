@@ -28,4 +28,17 @@ La base geografica usa OpenFreeMap e MapLibre con attribuzione visibile a OpenFr
 ```sh
 node --check script.js
 node --test tests/smoke.mjs
+node --test tests/static-pages.mjs
 ```
+
+## Pagine statiche dei comuni
+
+`data/cities.json` contiene i 100 comuni italiani più popolati, ordinati secondo la popolazione residente ISTAT al 1° gennaio 2026. Coordinate e gerarchia amministrativa sono completate tramite Open-Meteo.
+
+Il generatore crea pagine canoniche nella struttura `/{regione}/{comune}/`, aggiorna `sitemap.xml` e mantiene redirect permanenti dai vecchi URL `/meteo/{regione}/{comune}/`:
+
+```sh
+node tools/generate-city-pages.js
+```
+
+Il comando è idempotente e valida numero, ordinamento, campi obbligatori e unicità delle rotte prima di scrivere i file.

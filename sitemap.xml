@@ -2,86 +2,406 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chetempofa.com/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/lombardia/milano/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/lazio/roma/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/lazio/roma/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/lombardia/milano/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/piemonte/torino/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/campania/napoli/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/campania/napoli/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/piemonte/torino/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/sicilia/palermo/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/sicilia/palermo/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/liguria/genova/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/liguria/genova/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/emilia-romagna/bologna/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/emilia-romagna/bologna/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/toscana/firenze/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/toscana/firenze/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/puglia/bari/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/puglia/bari/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/sicilia/catania/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/sicilia/catania/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/veneto/venezia/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/veneto/verona/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/veneto/verona/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/veneto/venezia/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/veneto/padova/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/sicilia/messina/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/friuli-venezia-giulia/trieste/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/veneto/padova/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/lombardia/brescia/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/lombardia/brescia/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/emilia-romagna/parma/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/emilia-romagna/parma/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/emilia-romagna/modena/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/friuli-venezia-giulia/trieste/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/umbria/perugia/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/toscana/prato/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/sardegna/cagliari/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/puglia/taranto/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://chetempofa.com/meteo/lombardia/busto-arsizio/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <loc>https://chetempofa.com/emilia-romagna/modena/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/reggio-nellemilia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/calabria/reggio-di-calabria/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/umbria/perugia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/ravenna/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/livorno/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/rimini/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sardegna/cagliari/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/puglia/foggia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/ferrara/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lazio/latina/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/salerno/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/giugliano-in-campania/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/monza/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/bergamo/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sardegna/sassari/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/trentino-alto-adige/trento/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/abruzzo/pescara/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/forli/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sicilia/siracusa/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/veneto/vicenza/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/trentino-alto-adige/bolzano/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/umbria/terni/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/piacenza/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/piemonte/novara/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/marche/ancona/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/friuli-venezia-giulia/udine/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/puglia/andria/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/arezzo/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/cesena/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/marche/pesaro/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/puglia/lecce/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/piemonte/alessandria/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/liguria/la-spezia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/puglia/barletta/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/pisa/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lazio/guidonia-montecelio/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/pistoia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/lucca/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/veneto/treviso/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/busto-arsizio/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lazio/fiumicino/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/como/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/calabria/catanzaro/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/grosseto/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/puglia/brindisi/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sicilia/marsala/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/varese/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/sesto-san-giovanni/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/torre-del-greco/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/cinisello-balsamo/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lazio/aprilia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/pozzuoli/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/calabria/corigliano-rossano/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sicilia/ragusa/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/carpi/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/piemonte/asti/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/casoria/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/caserta/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/pavia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/cremona/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/abruzzo/laquila/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/puglia/altamura/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sicilia/gela/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/emilia-romagna/imola/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sardegna/quartu-santelena/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/calabria/lamezia-terme/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lazio/viterbo/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sicilia/vittoria/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/massa/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lazio/pomezia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/vigevano/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/calabria/cosenza/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/basilicata/potenza/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/castellammare-di-stabia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/sardegna/olbia/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/campania/afragola/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lombardia/legnano/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/toscana/viareggio/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/lazio/anzio/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://chetempofa.com/marche/fano/</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
 </urlset>

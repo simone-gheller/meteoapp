@@ -1,5 +1,19 @@
 # chetempofa release plan
 
+## Release 7 - Top 100 comuni statici
+
+Stato: completata il 21 ottobre 2026.
+
+Obiettivo: rendere indicizzabili le principali località italiane senza introdurre framework o rendering server-side.
+
+Scope completato:
+
+- dataset dei 100 comuni più popolati secondo ISTAT 2026;
+- pagine Atlas in `/{regione}/{comune}/` con metadati, canonical, JSON-LD e località precaricata;
+- sitemap con homepage e 100 URL comunali;
+- redirect 301 dai precedenti URL `/meteo/{regione}/{comune}/`;
+- generatore idempotente e test automatici dedicati.
+
 ## Release 6 - Atlas production design
 
 Stato: completata il 21 ottobre 2026.
