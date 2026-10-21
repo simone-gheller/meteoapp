@@ -12,6 +12,7 @@ Scope completato:
 - pagine Atlas in `/{regione}/{comune}/` con metadati, canonical, JSON-LD e località precaricata;
 - sitemap con homepage e 100 URL comunali;
 - redirect 301 dai precedenti URL `/meteo/{regione}/{comune}/`;
+- ricerca, suggerimenti e città recenti instradati alle pagine canoniche quando il comune è nel catalogo;
 - generatore idempotente e test automatici dedicati.
 
 ## Release 6 - Atlas production design

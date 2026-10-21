@@ -8,6 +8,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const cities = JSON.parse(fs.readFileSync(path.join(root, "data/cities.json"), "utf8"));
 const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
 const redirects = fs.readFileSync(path.join(root, "_redirects"), "utf8");
+const script = fs.readFileSync(path.join(root, "script.js"), "utf8");
 
 test("il dataset contiene i 100 comuni più popolati in ordine", () => {
   assert.equal(cities.length, 100);
@@ -36,6 +37,16 @@ test("sitemap e redirect usano la nuova struttura", () => {
   assert.match(sitemap, /https:\/\/chetempofa\.com\/lombardia\/milano\//);
   assert.match(redirects, /\/meteo\/lombardia\/milano\/ \/lombardia\/milano\/ 301/);
   assert.equal(fs.existsSync(path.join(root, "meteo")), false);
+});
+
+test("la ricerca apre le pagine statiche quando disponibili", () => {
+  assert.match(script, /async function openPlace\(place/);
+  assert.match(script, /fetch\("\/data\/cities\.json"/);
+  assert.match(script, /window\.location\.assign\(pathname\)/);
+  assert.match(script, /!staticCity && readStaticPlace\(\)/);
+  assert.match(script, /window\.location\.assign\("\/"\)/);
+  assert.match(script, /await openPlace\(places\[0\]\)/);
+  assert.match(script, /void openPlace\(place\)/);
 });
 
 function escapeRegex(value) {

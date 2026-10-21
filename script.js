@@ -140,6 +140,7 @@ let weatherRequestRun = 0;
 let loadingDepth = 0;
 let weatherAbortController = null;
 let atlasAbortController = null;
+let staticCitiesPromise = null;
 const memoryApiCache = new Map();
 const inFlightApiRequests = new Map();
 const apiResponseMeta = new Map();
@@ -152,6 +153,7 @@ function init() {
   wireAtlasControls();
   initializeVectorAtlas();
   renderRecent();
+  void loadStaticCities();
   boot();
   window.setTimeout(() => pruneApiCache(), 1200);
 }
@@ -387,8 +389,8 @@ async function searchAndLoad(query, options = {}) {
       });
     }
 
-    await loadWeather(places[0]);
     els.citySearch.value = "";
+    await openPlace(places[0]);
   } catch (error) {
     if (trackSearch) {
       trackEvent("city_search_submitted", {
@@ -499,7 +501,7 @@ function selectSuggestion(index) {
     ...placeAnalyticsPayload(place),
     rank: index + 1,
   });
-  loadWeather(place);
+  void openPlace(place);
 }
 
 function setActiveSuggestion(index) {
@@ -558,6 +560,60 @@ async function searchPlaces(query, count) {
   });
 
   return rankPlaces(query, places).slice(0, count);
+}
+
+async function openPlace(place, options = {}) {
+  const { remember = true } = options;
+  const staticCity = await findStaticCity(place);
+
+  if (staticCity) {
+    const pathname = `/${staticCity.region_slug}/${staticCity.slug}/`;
+    if (window.location.pathname !== pathname) {
+      const normalizedPlace = normalizePlace({ ...staticCity, source: place.source || "search" });
+      if (remember) rememberPlace(normalizedPlace);
+      localStorage.setItem(PLACE_KEY, JSON.stringify(normalizedPlace));
+      window.location.assign(pathname);
+      return;
+    }
+  }
+
+  if (!staticCity && readStaticPlace()) {
+    const normalizedPlace = normalizePlace(place);
+    if (remember) rememberPlace(normalizedPlace);
+    localStorage.setItem(PLACE_KEY, JSON.stringify(normalizedPlace));
+    window.location.assign("/");
+    return;
+  }
+
+  await loadWeather(place, options);
+}
+
+async function findStaticCity(place) {
+  const normalizedPlace = normalizePlace(place);
+  if (normalizeSearchText(normalizedPlace.country_code) !== "it") return null;
+
+  const cities = await loadStaticCities();
+  const name = normalizeSearchText(normalizedPlace.name);
+  const region = normalizeSearchText(normalizedPlace.admin1);
+
+  return cities.find((city) => {
+    if (normalizeSearchText(city.name) !== name) return false;
+    return !region || normalizeSearchText(city.admin1) === region;
+  }) || null;
+}
+
+function loadStaticCities() {
+  if (!staticCitiesPromise) {
+    staticCitiesPromise = fetch("/data/cities.json", { cache: "force-cache" })
+      .then((response) => {
+        if (!response.ok) throw new Error(`City index ${response.status}`);
+        return response.json();
+      })
+      .then((cities) => Array.isArray(cities) ? cities : [])
+      .catch(() => []);
+  }
+
+  return staticCitiesPromise;
 }
 
 async function loadWeather(place, options = {}) {
@@ -1748,7 +1804,7 @@ function renderRecent() {
 
   els.recentCities.querySelectorAll("[data-recent]").forEach((button) => {
     button.addEventListener("click", () => {
-      loadWeather(recent[Number(button.dataset.recent)], { remember: true });
+      void openPlace(recent[Number(button.dataset.recent)], { remember: true });
     });
   });
 }
