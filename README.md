@@ -21,7 +21,7 @@ La base geografica usa OpenFreeMap e MapLibre con attribuzione visibile a OpenFr
 
 - [Sorgente radar futura](docs/decisions/001-radar-source.md): decisione rimandata; Radar-DPC è il candidato primario per l'Italia, RainViewer resta un'opzione internazionale da rivalutare.
 - Le risposte di ricerca, meteo, qualità dell'aria e reverse geocoding usano cache con TTL e fallback temporaneo ai dati scaduti in caso di errore. La griglia Atlas, più pesante, resta nella sola memoria della sessione.
-- Le richieste meteo e Atlas obsolete vengono annullate quando cambia città o giornata. L'header distingue dati live, cache locale e modalità offline.
+- Le richieste meteo e Atlas obsolete vengono annullate quando cambia città o giornata. Il badge LIVE resta stabile nell'header; cache locale e modalità offline sono indicate nel footer e nei messaggi di stato.
 
 ## Verifica
 

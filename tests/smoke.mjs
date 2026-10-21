@@ -40,8 +40,9 @@ test("Atlas usa caricamento giornaliero e limiti di zoom sicuri", () => {
 
 test("lo stato dei dati è comunicato anche visivamente", () => {
   assert.match(html, /id="dataFreshnessBadge"/);
-  assert.match(css, /\.is-cached/);
   assert.match(script, /renderDataFreshness/);
+  assert.match(script, /dataFreshnessBadge\.textContent = "LIVE"/);
+  assert.doesNotMatch(script, /dataFreshnessBadge\.textContent = label/);
 });
 
 test("la decisione radar resta esplicitamente rinviata", () => {

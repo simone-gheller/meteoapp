@@ -810,15 +810,15 @@ function renderDataFreshness() {
   const offline = navigator.onLine === false;
   const cached = state.dataStatus?.source === "cache";
   const stale = state.dataStatus?.stale === true;
-  const label = offline ? "OFFLINE" : cached ? "CACHE" : "LIVE";
 
-  els.dataFreshnessBadge.textContent = label;
-  els.dataFreshnessBadge.classList.toggle("is-cached", cached || offline);
+  els.dataFreshnessBadge.textContent = "LIVE";
   els.dataFreshnessBadge.title = stale
-    ? "Ultimi dati salvati: aggiornamento non disponibile"
+    ? "LIVE · ultimi dati salvati: aggiornamento non disponibile"
     : cached
-      ? "Dati recenti caricati dalla cache locale"
-      : "Dati aggiornati dal servizio meteo";
+      ? "LIVE · dati recenti caricati dalla cache locale"
+      : offline
+        ? "LIVE · connessione assente"
+        : "LIVE · dati aggiornati dal servizio meteo";
 
   if (state.weather?.current?.time) {
     const suffix = stale ? " · ultimi dati salvati" : cached ? " · cache locale" : "";
