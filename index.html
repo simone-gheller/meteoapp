@@ -6,161 +6,43 @@
     <title>chetempofa - meteo senza sbatti</title>
     <meta name="description" content="Meteo italiano semplice e veloce: cerca una città, guarda temperatura, pioggia, vento e previsioni senza account.">
     <link rel="canonical" href="https://chetempofa.com/">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="it_IT">
-    <meta property="og:site_name" content="chetempofa">
-    <meta property="og:title" content="chetempofa - meteo senza sbatti">
-    <meta property="og:description" content="Meteo italiano semplice e veloce: temperatura, pioggia, vento e previsioni senza account.">
-    <meta property="og:url" content="https://chetempofa.com/">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="chetempofa - meteo senza sbatti">
-    <meta name="twitter:description" content="Meteo italiano semplice e veloce: temperatura, pioggia, vento e previsioni senza account.">
-    <meta name="theme-color" content="#f3f7f2">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="script.js" defer></script>
+    <meta property="og:type" content="website"><meta property="og:locale" content="it_IT"><meta property="og:site_name" content="chetempofa"><meta property="og:title" content="chetempofa - meteo senza sbatti"><meta property="og:url" content="https://chetempofa.com/">
+    <meta name="twitter:card" content="summary"><meta name="theme-color" content="#f2f4f4">
+    <link rel="preconnect" href="https://api.open-meteo.com"><link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.12.0/dist/maplibre-gl.css"><link rel="stylesheet" href="css/style.css?v=atlas-2.2"><script src="https://unpkg.com/maplibre-gl@5.12.0/dist/maplibre-gl.js" defer></script><script src="script.js?v=atlas-2.2" defer></script>
   </head>
-  <body data-condition="cloud">
-    <div class="app-shell">
-      <header class="topbar">
-        <a class="brand" href="/" aria-label="chetempofa">
-          <span class="brand-mark" aria-hidden="true">
-            <img src="/favicon.svg" alt="">
-          </span>
-          <span>
-            <strong>chetempofa</strong>
-            <small>meteo senza sbatti</small>
-          </span>
-        </a>
+  <body class="atlas-app" data-condition="cloud">
+    <header class="atlas-topbar">
+      <a class="atlas-brand" href="/" aria-label="chetempofa, pagina iniziale"><span class="atlas-brand__mark" aria-hidden="true">◉</span><strong>chetempofa</strong><small>LIVE ATLAS</small></a>
+      <form class="atlas-search" id="searchForm" autocomplete="off"><label class="sr-only" for="citySearch">Cerca una città</label><input id="citySearch" name="city" type="search" placeholder="Cerca città" role="combobox" aria-autocomplete="list" aria-controls="suggestions" aria-expanded="false"><button type="submit" aria-label="Cerca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button><div class="suggestions" id="suggestions" role="listbox" hidden></div></form>
+      <div class="atlas-meta"><span>DATI <time id="headerDataTime">--:--</time></span><b id="dataFreshnessBadge" aria-live="polite" title="Dati aggiornati dal servizio meteo">LIVE</b><button class="atlas-location" id="locationButton" type="button" aria-label="Usa la posizione attuale"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.75v2.2M12 19.05v2.2M2.75 12h2.2M19.05 12h2.2"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></button></div>
+    </header>
 
-        <form class="search-form" id="searchForm" autocomplete="off">
-          <label class="sr-only" for="citySearch">Cerca una città</label>
-          <div class="input-shell">
-            <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M10.8 4.5a6.3 6.3 0 1 1 0 12.6 6.3 6.3 0 0 1 0-12.6Zm0 2a4.3 4.3 0 1 0 0 8.6 4.3 4.3 0 0 0 0-8.6Zm5.37 8.26 3.78 3.77a1 1 0 0 1-1.42 1.42l-3.77-3.78a1 1 0 0 1 1.41-1.41Z"></path>
-            </svg>
-            <input id="citySearch" name="city" type="search" placeholder="Cerca Milano, Roma, Tokyo..." role="combobox" aria-autocomplete="list" aria-controls="suggestions" aria-expanded="false">
-            <button class="search-button" type="submit">Cerca</button>
-          </div>
-          <div class="suggestions" id="suggestions" role="listbox" hidden></div>
-        </form>
+    <main>
+      <div class="atlas-status" id="status" role="status" aria-live="polite" hidden></div>
+      <section class="atlas-day-selector" aria-labelledby="pageTitle">
+        <h1 id="pageTitle">Previsioni meteo <span id="cityName">Milano</span> · <span id="pageDate">oggi</span></h1><p id="locationMeta">Carico il cielo...</p>
+        <section class="recent-section" id="recentSection" aria-label="Città recenti" hidden><div class="recent-list" id="recentCities"></div></section>
+        <div class="atlas-day-picker" id="dailyList" role="tablist" aria-label="Previsioni per giorno"></div><span id="forecastSummary" class="sr-only">--</span>
+      </section>
 
-        <div class="top-actions">
-          <button class="location-button" id="locationButton" type="button">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2.75a1 1 0 0 1 1 1v1.32a7 7 0 0 1 5.93 5.93h1.32a1 1 0 1 1 0 2h-1.32A7 7 0 0 1 13 18.93v1.32a1 1 0 1 1-2 0v-1.32A7 7 0 0 1 5.07 13H3.75a1 1 0 1 1 0-2h1.32A7 7 0 0 1 11 5.07V3.75a1 1 0 0 1 1-1Zm0 4.25a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2.75a2.25 2.25 0 1 1 0 4.5 2.25 2.25 0 0 1 0-4.5Z"></path>
-            </svg>
-            <span>Usa posizione</span>
-          </button>
-        </div>
-      </header>
-
-      <main class="dashboard">
-        <div class="status-row" id="status" role="status" aria-live="polite" hidden></div>
-
-        <section class="current-section" aria-labelledby="cityName">
-          <div class="current-copy">
-            <p class="kicker" id="locationMeta">Carico il cielo...</p>
-            <h1 id="cityName">Meteo</h1>
-            <div class="temperature-readout">
-              <span id="currentTemp">--</span>
-              <span id="tempUnit">°C</span>
-            </div>
-            <p class="condition" id="conditionLabel">In attesa dei dati</p>
-            <p class="advice" id="weatherAdvice">Appena arrivano le previsioni ti dico come muoverti.</p>
-            <div class="current-actions">
-              <span id="updatedAt">--</span>
-            </div>
-          </div>
-
-          <div class="visual-pane" aria-hidden="true">
-            <img id="currentIcon" src="icons/animated/cloudy.svg" alt="">
-            <div class="sun-window">
-              <div>
-                <span>Alba</span>
-                <strong id="sunriseTime">--</strong>
-              </div>
-              <div>
-                <span>Tramonto</span>
-                <strong id="sunsetTime">--</strong>
-              </div>
-              <div>
-                <span>UV</span>
-                <strong id="uvIndex">--</strong>
-              </div>
-            </div>
-          </div>
+      <section class="atlas-shell">
+        <section class="atlas-map" data-weather-map data-active-layer="rain" aria-label="Atlante meteo interattivo">
+          <div class="atlas-map__day"><small>PREVISIONE VISUALIZZATA</small><b id="mapDay">--</b></div>
+          <div class="atlas-map__toolbar"><div class="atlas-layers" role="group" aria-label="Livello della carta"><button class="active" type="button" data-layer="rain" aria-pressed="true"><span>◌</span>Pioggia prevista</button><button type="button" data-layer="temp" aria-pressed="false"><span>◐</span>Temperature</button><button type="button" data-layer="front" aria-pressed="false"><span>≈</span>Pressione + vento</button></div><button class="map-tool" type="button" data-map-action="center" aria-label="Centra la carta sulla località">⌖</button><button class="map-tool" type="button" data-map-action="zoom-in" aria-label="Ingrandisci la carta">＋</button><button class="map-tool" type="button" data-map-action="zoom-out" aria-label="Riduci la carta">−</button><output class="map-zoom" id="mapZoom" aria-label="Livello di zoom e ampiezza visibile" aria-live="polite">Z10</output></div>
+          <div class="atlas-map__viewport" id="mapViewport"><div class="atlas-vector-map" id="atlasVectorMap" aria-hidden="true"></div><svg class="atlas-map__svg" viewBox="0 0 1000 760" role="img" aria-label="Carta geografica con previsione di pioggia Open-Meteo interpolata attorno alla località selezionata"><defs><linearGradient id="atlasSea" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8edf0"/><stop offset="1" stop-color="#cfdee3"/></linearGradient><pattern id="atlasGrid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#173a45" stroke-opacity=".08"/></pattern></defs><rect class="atlas-map-fallback" width="1000" height="760" fill="url(#atlasSea)"/><g class="atlas-basemap" id="mapBaseLayer"></g><rect class="atlas-map-wash" width="1000" height="760"/><rect class="atlas-map-grid" width="1000" height="760" fill="url(#atlasGrid)"/><g class="map-rain-layer" id="mapRainLayer"></g><g class="map-temp-layer" id="mapTempLayer"></g><g class="map-front-layer" id="mapFrontLayer"></g><g class="atlas-contours" id="mapPressureContours"></g><g class="atlas-wind" id="mapWindLayer"></g><g class="atlas-major-cities" id="mapCitiesLayer"></g><g class="atlas-city-marker" transform="translate(500 370)"><path d="M0 25C-4 18-18 5-18-8a18 18 0 1 1 36 0C18 5 4 18 0 25Z"/><circle cy="-8" r="6"/><text x="25" y="5" id="mapTemp">--</text></g><g class="atlas-samples" id="mapSamplesLayer"></g></svg></div>
+          <div class="atlas-scale"><b id="mapLayerTitle">PIOGGIA PREVISTA · mm/h</b><span id="mapScaleMin">0,2</span><i id="mapScaleBar"></i><span id="mapScaleMax">16+</span></div>
+          <div class="atlas-timeline"><button type="button" id="mapPlay" aria-label="Avvia animazione">▶</button><div><span id="mapStartTime">--</span><b id="mapTimeLabel">--</b><span id="mapEndTime">--</span><input id="mapTimeRange" type="range" min="0" max="11" value="0" aria-label="Ora della mappa"></div></div><span class="atlas-map__attribution"><a href="https://openfreemap.org/" target="_blank" rel="noreferrer">OpenFreeMap</a> · <a href="https://openmaptiles.org/" target="_blank" rel="noreferrer">© OpenMapTiles</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OSM</a></span><p class="atlas-map__note" id="mapDataNote" aria-live="polite">Carico la previsione meteo locale…</p>
         </section>
+        <aside class="atlas-panel" aria-labelledby="conditionLabel"><div class="atlas-panel__top"><div><p id="heroKicker">ORA · --</p><h2 id="conditionLabel">In attesa dei dati</h2></div><img id="currentIcon" src="icons/animated/cloudy.svg" alt=""></div><div class="atlas-reading"><strong><span id="currentTemp">--</span><sup>°</sup></strong><span id="temperatureTrend" class="temperature-trend" aria-label="Tendenza temperatura">→</span></div><div class="impact-card"><span aria-hidden="true">☂</span><b id="weatherAdvice">Appena arrivano le previsioni ti dico come muoverti.</b></div><section class="mini-rain" aria-labelledby="miniRainTitle"><header><b id="miniRainTitle">Pioggia / prossime 2 ore</b></header><div class="mini-rain__chart" id="miniRainChart"></div><footer id="miniRainTimes"></footer></section><span id="updatedAt" class="sr-only">--</span><span id="tempUnit" class="sr-only">°C</span></aside>
+      </section>
 
-        <section class="recent-section" id="recentSection" hidden>
-          <h2 class="sr-only">Città recenti</h2>
-          <div class="recent-list" id="recentCities"></div>
-        </section>
+      <section class="atlas-forecast">
+        <section class="overview-chart" aria-labelledby="overviewTitle"><header><div class="overview-title"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 34V18m8 16V9m9 25V14m9 20V5M3 35h34"/></svg><div><small id="chartEyebrow">TENDENZA · 14 GIORNI</small><h2 id="overviewTitle">Panoramica giorno per giorno</h2></div></div><div class="chart-controls"><div class="chart-mode" role="group" aria-label="Intervallo del grafico"><button class="active" type="button" data-chart-mode="days" aria-pressed="true">14 giorni</button><button type="button" data-chart-mode="hours" aria-pressed="false">12 ore</button></div><div class="chart-legend" id="chartLegend"><span class="max">Massime</span><span class="min">Minime</span><span class="rain">Pioggia (mm)</span></div></div></header><div class="forecast-chart" id="forecastChart" aria-live="polite"></div></section>
+        <section class="atlas-more" aria-labelledby="moreTitle"><header><small>IL RESTO, IN BREVE</small><h2 id="moreTitle">Altri dati</h2></header><div class="atlas-more__grid" id="metricsGrid" aria-label="Dettagli meteo"></div></section>
+      </section>
+    </main>
 
-        <section class="metrics-grid" id="metricsGrid" aria-label="Dettagli meteo"></section>
-
-        <section class="forecast-section" aria-labelledby="forecastTitle">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Sette giorni</p>
-              <h2 id="forecastTitle">Previsioni</h2>
-            </div>
-            <span id="forecastSummary">--</span>
-          </div>
-          <div class="daily-list" id="dailyList"></div>
-        </section>
-
-        <section class="timeline-section" aria-labelledby="timelineTitle">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Ora per ora</p>
-              <h2 id="timelineTitle">Oggi</h2>
-            </div>
-            <span id="timelineSummary">--</span>
-          </div>
-          <div class="hourly-strip" id="hourlyStrip"></div>
-        </section>
-      </main>
-
-      <footer class="app-footer" aria-label="Informazioni app">
-        <div class="footer-main">
-          <div class="footer-brand">
-            <strong>chetempofa</strong>
-            <span>Meteo semplice, chiaro e senza account.</span>
-          </div>
-
-          <nav class="footer-nav" aria-labelledby="footerProductTitle">
-            <h2 id="footerProductTitle">Prodotto</h2>
-            <a href="#forecastTitle">Previsioni</a>
-            <a href="#timelineTitle">Ora per ora</a>
-            <a href="#locationButton">Usa la posizione</a>
-          </nav>
-
-          <nav class="footer-nav" aria-labelledby="footerInfoTitle">
-            <h2 id="footerInfoTitle">Informazioni</h2>
-            <a href="https://open-meteo.com/en/licence" target="_blank" rel="noreferrer">Fonti dati</a>
-            <span>Privacy e cookie · in preparazione</span>
-            <span>Note legali · in preparazione</span>
-            <span>Contatti · in preparazione</span>
-          </nav>
-        </div>
-
-        <div class="footer-bottom">
-          <p class="footer-data">
-            Dati meteo e geocoding forniti da
-            <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a>
-            · dati API
-            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noreferrer">CC BY 4.0</a>.
-            Reverse geocoding posizione:
-            <a href="https://www.bigdatacloud.com/" target="_blank" rel="noreferrer">BigDataCloud</a>.
-          </p>
-          <p class="footer-status">
-            <span id="timezoneLabel">Fuso orario locale</span>
-            <span id="footerUpdatedAt">Ultimo aggiornamento --</span>
-          </p>
-          <p class="footer-legal">© 2026 chetempofa</p>
-        </div>
-      </footer>
-    </div>
+    <footer class="atlas-footer" aria-label="Informazioni app"><a class="atlas-brand" href="/"><span class="atlas-brand__mark" aria-hidden="true">◉</span><strong>chetempofa</strong></a><p>Dati meteo: <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> · qualità dell’aria: CAMS ENSEMBLE via Open-Meteo · previsioni indicative</p><p><span id="timezoneLabel">Fuso orario locale</span> · <span id="footerUpdatedAt">Ultimo aggiornamento --</span></p></footer>
   </body>
 </html>

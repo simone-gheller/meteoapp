@@ -1,5 +1,31 @@
 # chetempofa release plan
 
+## Release 6 - Atlas production design
+
+Stato: completata il 21 ottobre 2026.
+
+Obiettivo: portare in produzione il linguaggio visivo Atlas con dati reali, una carta geografica leggibile e un comportamento resiliente.
+
+Scope completato:
+
+- nuova UI responsive Atlas per header, selettore giornaliero, mappa, riepilogo e grafici;
+- dati Open-Meteo reali per meteo, qualità dell'aria e griglia geografica;
+- base vettoriale OpenFreeMap con zoom controllato, strade e confini amministrativi;
+- cache con TTL, fallback offline, deduplicazione e cancellazione delle richieste obsolete;
+- grafici a 14 giorni e 12 ore, metriche compatte e stati live/cache/offline;
+- smoke test automatici e ADR sulla futura sorgente radar.
+
+Gate di rilascio:
+
+```sh
+node --check script.js
+node --test tests/smoke.mjs
+git diff --check
+xmllint --noout sitemap.xml
+```
+
+Prossima release: preparazione production-hardening (asset critici locali, app shell offline, accessibilità completa, budget prestazioni e policy di sicurezza).
+
 Questo documento divide l'implementazione in release piccole, ciascuna spezzata in phases verificabili.
 
 Principio guida: pubblicare prima una SPA statica solida, poi aggiungere search hardening, SEO city pages, GA4 e monetizzazione solo quando servono davvero.
